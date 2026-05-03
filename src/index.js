@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ClerkProvider } from '@clerk/clerk-react';
 import App from './App';
 
+// Clé Clerk publique — safe à mettre dans le code
+const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY 
+  || "pk_test_bmVhdC1jdWItNTcuY2xlcmsuYWNjb3VudHMuZGV2JA";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<React.StrictMode><App /></React.StrictMode>);
+root.render(
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <App />
+  </ClerkProvider>
+);
