@@ -22,7 +22,7 @@ export async function onRequestPost(context) {
     }
 
     // Appel à l'API Google Gemini (modèle gratuit Flash)
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
 
     const geminiResponse = await fetch(geminiUrl, {
       method: "POST",
