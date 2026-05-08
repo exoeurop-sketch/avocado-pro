@@ -197,7 +197,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
     setAiLoading(true);setAiText("");
     const history=allWeeks.map(w=>{const p=REAL_PRICES[w]?.[origin]?.[cal];return p?`W${w}:${p[0]}–${p[1]}`:`W${w}:N/A`;}).join(" | ");
     const prompt=`Hass avocado Europe expert. 4 sentences (${lang==="fr"?"French":lang==="es"?"Spanish":"English"}), concrete buying advice:\nOrigin:${t.origins[origin]}|Grade:${cal}|Week:${week}\nPrices:${history}\nCIRAD W17=11.87€↘ EU supply W18=27Mkg\nContext:${ctx?.note}|${ctx?.season}\nGrades:large ${ctx?.big} medium ${ctx?.medium} small ${ctx?.small}`;
-    try{const r=await fetch("/.netlify/functions/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});const d=await r.json();setAiText(d.text||"N/A");}
+    try{const r=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});const d=await r.json();setAiText(d.text||"N/A");}
     catch{setAiText("Connection error.");}
     setAiLoading(false);
   };

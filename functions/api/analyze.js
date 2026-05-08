@@ -1,64 +1,74 @@
-// Cloudflare Pages Function: POST /api/analyze
-// Equivalent of the original Netlify function, rewritten for the
-// Cloudflare Workers / Pages Functions runtime (Web Standards `fetch`).
-//
-// Env vars (set in the Cloudflare Pages dashboard → Settings → Environment variables):
-//   ANTHROPIC_API_KEY  (required, mark as "Secret")
+// Cloudflare Pages Function — appel sécurisé à Google Gemini
+// La clé API GEMINI_API_KEY est stockée comme variable d'environnement Cloudflare
+// Le navigateur ne voit jamais cette clé.
 
-export async function onRequestPost({ request, env }) {
-  if (!env.ANTHROPIC_API_KEY) {
-    return json({ error: "ANTHROPIC_API_KEY not configured" }, 500);
-  }
-
-  let prompt;
+export async function onRequestPost(context) {
   try {
-    const body = await request.json();
-    prompt = body?.prompt;
-  } catch {
-    return json({ error: "Invalid JSON body" }, 400);
-  }
+    const { request, env } = context;
+    const { prompt } = await request.json();
 
-  if (!prompt) {
-    return json({ error: "Missing prompt" }, 400);
-  }
+    if (!prompt) {
+      return new Response(
+        JSON.stringify({ error: "Missing prompt" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
-  try {
-    const apiRes = await fetch("https://api.anthropic.com/v1/messages", {
+    if (!env.GEMINI_API_KEY) {
+      return new Response(
+        JSON.stringify({ error: "GEMINI_API_KEY not configured" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Appel à l'API Google Gemini (modèle gratuit Flash)
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`;
+
+    const geminiResponse = await fetch(geminiUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 900,
-        messages: [{ role: "user", content: prompt }],
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1024,
+        },
       }),
     });
 
-    if (!apiRes.ok) {
-      const errText = await apiRes.text();
-      return json({ error: `Anthropic API error: ${errText}` }, apiRes.status);
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text();
+      return new Response(
+        JSON.stringify({ error: "Gemini API error", details: errorText }),
+        { status: geminiResponse.status, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    const data = await apiRes.json();
-    return json({ text: data?.content?.[0]?.text || "" }, 200);
-  } catch (err) {
-    return json({ error: err.message || "Unknown error" }, 500);
+    const data = await geminiResponse.json();
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Aucune réponse générée.";
+
+    return new Response(
+      JSON.stringify({ text }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: "Server error", message: error.message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 }
 
-// Reject other methods cleanly
-export const onRequest = ({ request }) => {
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-};
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" },
+// Gestion CORS pour permettre les requêtes depuis le navigateur
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
   });
 }
