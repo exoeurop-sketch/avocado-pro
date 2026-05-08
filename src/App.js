@@ -440,7 +440,6 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
                     <td style={{padding:"6px 10px",fontWeight:700,color:"#374151",fontFamily:"'Space Mono',monospace"}}>{c}</td>
                     {FORECAST_WEEKS.flatMap(w=>ORIGINS.filter(o=>o!=="Spain").map(o=>{
                       const p=FORECAST_PRICES[w]?.[o]?.[c];
-                      const isKg=c>=26;
                       return(<td key={`${w}-${o}-${c}`} style={{padding:"6px 4px",textAlign:"center",fontFamily:"'Space Mono',monospace",fontSize:11,color:p?"#16a34a":"#cbd5e1"}}>
                         {p?<span><b>{p[0]}</b>-<b>{p[1]}</b></span>:"—"}
                       </td>);
