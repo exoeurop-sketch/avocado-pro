@@ -1,6 +1,6 @@
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -8,7 +8,7 @@ const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
 // ─── TRADUCTIONS ──────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","🔮 Analyse IA"],
+    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🔮 Analyse IA"],
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
@@ -42,9 +42,17 @@ const T = {
       "Brazil":      {big:"=",medium:"↘",small:"↘",note:"Peak passé. Réorientation Argentine/Uruguay.",season:"Réduction post-peak"},
       "Spain":       {big:"↘",medium:"↘",small:"↘",note:"Fin de saison. Marché interne uniquement.",season:"Clôture saison"},
     },
+    fcTitle:"Prévisions S20-S23", fcSub:"Basées sur saisonnalité, climat & tendances marché",
+    fcStrategyTitle:"📅 Stratégie acheteur",
+    fcFactorsTitle:"🌍 Facteurs marché",
+    fcChartTitle:"Évolution prix prévue · Cal.18 (€/caisse 4kg)",
+    fcSupplyTitle:"Volume offre EU prévu (M kg/sem)",
+    fcTableTitle:"Tableau prévisionnel par calibre & origine",
+    fcTrendBig:"Grands (14-18)", fcTrendMid:"Moyens (20-22)", fcTrendSml:"Petits (24-32)",
+    fcImpactHigh:"Impact fort", fcImpactMid:"Impact moyen", fcImpactLow:"Impact faible",
   },
   en: {
-    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","🔮 AI Analysis"],
+    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🔮 AI Analysis"],
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
     col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
@@ -78,9 +86,17 @@ const T = {
       "Brazil":      {big:"=",medium:"↘",small:"↘",note:"Peak passed. Redirecting to Argentina/Uruguay.",season:"Post-peak reduction"},
       "Spain":       {big:"↘",medium:"↘",small:"↘",note:"End of season. Domestic market only.",season:"Season close"},
     },
+    fcTitle:"Forecast W20-W23", fcSub:"Based on seasonality, climate & market trends",
+    fcStrategyTitle:"📅 Buyer strategy",
+    fcFactorsTitle:"🌍 Market factors",
+    fcChartTitle:"Forecasted price evolution · Grade 18 (€/4kg box)",
+    fcSupplyTitle:"Forecasted EU supply (M kg/week)",
+    fcTableTitle:"Forecast table by grade & origin",
+    fcTrendBig:"Large (14-18)", fcTrendMid:"Medium (20-22)", fcTrendSml:"Small (24-32)",
+    fcImpactHigh:"High impact", fcImpactMid:"Medium impact", fcImpactLow:"Low impact",
   },
   es: {
-    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","🔮 Análisis IA"],
+    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🔮 Análisis IA"],
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
@@ -114,6 +130,14 @@ const T = {
       "Brazil":      {big:"=",medium:"↘",small:"↘",note:"Pico pasado. Reorientación Argentina/Uruguay.",season:"Reducción post-pico"},
       "Spain":       {big:"↘",medium:"↘",small:"↘",note:"Fin de temporada. Solo mercado interno.",season:"Cierre temporada"},
     },
+    fcTitle:"Previsiones S20-S23", fcSub:"Basadas en estacionalidad, clima y tendencias del mercado",
+    fcStrategyTitle:"📅 Estrategia comprador",
+    fcFactorsTitle:"🌍 Factores del mercado",
+    fcChartTitle:"Evolución prevista de precios · Cal.18 (€/caja 4kg)",
+    fcSupplyTitle:"Volumen previsto oferta UE (M kg/sem)",
+    fcTableTitle:"Tabla previsional por calibre y origen",
+    fcTrendBig:"Grandes (14-18)", fcTrendMid:"Medianos (20-22)", fcTrendSml:"Pequeños (24-32)",
+    fcImpactHigh:"Impacto alto", fcImpactMid:"Impacto medio", fcImpactLow:"Impacto bajo",
   },
 };
 
@@ -197,7 +221,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
     setAiLoading(true);setAiText("");
     const history=allWeeks.map(w=>{const p=REAL_PRICES[w]?.[origin]?.[cal];return p?`W${w}:${p[0]}–${p[1]}`:`W${w}:N/A`;}).join(" | ");
     const prompt=`Hass avocado Europe expert. 4 sentences (${lang==="fr"?"French":lang==="es"?"Spanish":"English"}), concrete buying advice:\nOrigin:${t.origins[origin]}|Grade:${cal}|Week:${week}\nPrices:${history}\nCIRAD W17=11.87€↘ EU supply W18=27Mkg\nContext:${ctx?.note}|${ctx?.season}\nGrades:large ${ctx?.big} medium ${ctx?.medium} small ${ctx?.small}`;
-    try{const r=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});const d=await r.json();setAiText(d.text||"N/A");}
+    try{const r=await fetch("/.netlify/functions/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});const d=await r.json();setAiText(d.text||"N/A");}
     catch{setAiText("Connection error.");}
     setAiLoading(false);
   };
@@ -335,6 +359,117 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
         </div>)}
 
         {tab===3&&(<div>
+          {/* En-tête prévisions */}
+          <div style={{background:"linear-gradient(135deg,#fef3c7,#fde68a)",borderRadius:14,border:"1px solid #f59e0b40",padding:14,marginBottom:12}}>
+            <div style={{fontSize:14,fontWeight:700,color:"#92400e",marginBottom:4}}>📈 {t.fcTitle}</div>
+            <div style={{fontSize:11,color:"#78350f"}}>{t.fcSub}</div>
+          </div>
+
+          {/* Stratégie acheteur — Carte par semaine */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>{t.fcStrategyTitle}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:10}}>
+              {FORECAST_WEEKS.map(w=>{const s=FORECAST_STRATEGY[w];const tr=FORECAST_TREND[w];return(
+                <div key={w} style={{background:"#ffffff",borderRadius:10,padding:12,border:`2px solid ${s.color}40`}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                    <div style={{fontSize:14,fontWeight:700,color:"#374151"}}>S{w}</div>
+                    <div style={{fontSize:11,fontWeight:700,color:s.color,padding:"3px 8px",borderRadius:6,background:s.color+"15"}}>{s.label}</div>
+                  </div>
+                  <div style={{fontSize:11,color:"#4b5563",lineHeight:1.5,marginBottom:8}}>{s.reason}</div>
+                  <div style={{display:"flex",gap:6,fontSize:10,color:"#6b7280"}}>
+                    <span>{t.fcTrendBig}: <b style={{color:trendColor(tr.big),fontSize:13}}>{tr.big}</b></span>
+                    <span>{t.fcTrendMid}: <b style={{color:trendColor(tr.medium),fontSize:13}}>{tr.medium}</b></span>
+                    <span>{t.fcTrendSml}: <b style={{color:trendColor(tr.small),fontSize:13}}>{tr.small}</b></span>
+                  </div>
+                  <div style={{fontSize:10,color:"#6b7280",marginTop:6,fontStyle:"italic"}}>{tr.note}</div>
+                </div>);})}
+            </div>
+          </div>
+
+          {/* Graphique évolution prix Cal.18 (réel + prévision) */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:12}}>{t.fcChartTitle}</div>
+            <div style={{display:"flex",alignItems:"flex-end",gap:6,height:160,paddingBottom:24,borderBottom:"1px solid #dee2e6",position:"relative"}}>
+              {[...REAL_WEEKS,...FORECAST_WEEKS].map(w=>{
+                const isReal=REAL_WEEKS.includes(w);
+                const p=isReal?REAL_PRICES[w]?.["Peru"]?.[18]:FORECAST_PRICES[w]?.["Peru"]?.[18];
+                if(!p)return null;
+                const avg=(p[0]+p[1])/2;
+                const h=Math.max(8,(avg/14)*140);
+                return(<div key={w} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",position:"relative"}}>
+                  <div style={{fontSize:9,fontFamily:"'Space Mono',monospace",color:isReal?"#16a34a":"#f59e0b",fontWeight:700,marginBottom:3}}>{avg.toFixed(1)}€</div>
+                  <div style={{width:"80%",height:h,background:isReal?"linear-gradient(180deg,#4ade80,#16a34a)":"linear-gradient(180deg,#fbbf24,#f59e0b)",borderRadius:"4px 4px 0 0",border:isReal?"none":"1px dashed #92400e"}}></div>
+                  <div style={{fontSize:10,color:"#4b5563",fontFamily:"'Space Mono',monospace",position:"absolute",bottom:-20}}>S{w}</div>
+                </div>);
+              })}
+            </div>
+            <div style={{display:"flex",gap:14,marginTop:8,fontSize:10,color:"#4b5563",justifyContent:"center"}}>
+              <span><span style={{display:"inline-block",width:10,height:10,background:"#16a34a",borderRadius:2,marginRight:4,verticalAlign:"middle"}}></span>{t.real}</span>
+              <span><span style={{display:"inline-block",width:10,height:10,background:"#f59e0b",borderRadius:2,marginRight:4,verticalAlign:"middle"}}></span>{t.proj}</span>
+            </div>
+          </div>
+
+          {/* Volume offre EU */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:12}}>{t.fcSupplyTitle}</div>
+            <div style={{display:"flex",alignItems:"flex-end",gap:8,height:120,paddingBottom:24,borderBottom:"1px solid #dee2e6",position:"relative"}}>
+              {Object.entries({...WEEKLY_SUPPLY_EU,...FORECAST_SUPPLY}).filter(([w])=>w>=14&&w<=23).map(([w,v])=>{
+                const wi=parseInt(w);const isReal=wi<=LATEST_WEEK;const h=Math.max(8,(v/30)*100);
+                return(<div key={w} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",position:"relative"}}>
+                  <div style={{fontSize:9,fontFamily:"'Space Mono',monospace",color:isReal?"#3b82f6":"#f59e0b",fontWeight:700,marginBottom:3}}>{v}M</div>
+                  <div style={{width:"80%",height:h,background:isReal?"linear-gradient(180deg,#60a5fa,#3b82f6)":"linear-gradient(180deg,#fbbf24,#f59e0b)",borderRadius:"4px 4px 0 0"}}></div>
+                  <div style={{fontSize:10,color:"#4b5563",fontFamily:"'Space Mono',monospace",position:"absolute",bottom:-20}}>S{w}</div>
+                </div>);
+              })}
+            </div>
+          </div>
+
+          {/* Tableau prévisionnel */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:12,overflowX:"auto"}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>{t.fcTableTitle}</div>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
+              <thead><tr style={{background:"#fff",borderBottom:"2px solid #dee2e6"}}>
+                <th style={{padding:"8px 10px",textAlign:"left",color:"#4b5563",fontWeight:700}}>{t.col.cal}</th>
+                {FORECAST_WEEKS.flatMap(w=>ORIGINS.filter(o=>o!=="Spain").map(o=>(
+                  <th key={`${w}-${o}`} style={{padding:"8px 6px",textAlign:"center",color:ORIGIN_COLOR[o],fontWeight:700,fontSize:10}}>S{w}<br/>{ORIGIN_FLAG[o]}</th>
+                )))}
+              </tr></thead>
+              <tbody>
+                {CALIBRES_LIST.map(c=>(
+                  <tr key={c} style={{borderBottom:"1px solid #f1f5f9"}}>
+                    <td style={{padding:"6px 10px",fontWeight:700,color:"#374151",fontFamily:"'Space Mono',monospace"}}>{c}</td>
+                    {FORECAST_WEEKS.flatMap(w=>ORIGINS.filter(o=>o!=="Spain").map(o=>{
+                      const p=FORECAST_PRICES[w]?.[o]?.[c];
+                      const isKg=c>=26;
+                      return(<td key={`${w}-${o}-${c}`} style={{padding:"6px 4px",textAlign:"center",fontFamily:"'Space Mono',monospace",fontSize:11,color:p?"#16a34a":"#cbd5e1"}}>
+                        {p?<span><b>{p[0]}</b>-<b>{p[1]}</b></span>:"—"}
+                      </td>);
+                    }))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{fontSize:10,color:"#6b7280",marginTop:8,fontStyle:"italic"}}>{t.cifNote}</div>
+          </div>
+
+          {/* Facteurs marché */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>{t.fcFactorsTitle}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:8}}>
+              {FORECAST_FACTORS.map((f,i)=>{const c=f.weight==="high"?"#f87171":f.weight==="medium"?"#fbbf24":"#4ade80";const lbl=f.weight==="high"?t.fcImpactHigh:f.weight==="medium"?t.fcImpactMid:t.fcImpactLow;return(
+                <div key={i} style={{background:"#ffffff",borderRadius:10,padding:10,border:`1px solid ${c}40`,borderLeft:`3px solid ${c}`}}>
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
+                    <span style={{fontSize:18}}>{f.icon}</span>
+                    <span style={{fontSize:12,fontWeight:700,color:"#374151",flex:1}}>{f.label}</span>
+                  </div>
+                  <div style={{fontSize:10,color:"#4b5563",lineHeight:1.5,marginBottom:6}}>{f.impact}</div>
+                  <div style={{fontSize:9,fontWeight:700,color:c,textTransform:"uppercase"}}>{lbl}</div>
+                </div>);})}
+            </div>
+          </div>
+        </div>)}
+
+        {tab===4&&(<div>
           <div style={{display:"flex",gap:10,marginBottom:12,flexWrap:"wrap"}}>
             <div style={{background:"#f8f9fa",borderRadius:12,border:"1px solid #dee2e6",padding:"12px 14px",flex:2,minWidth:220}}>
               <div style={{fontSize:10,color:"#4b5563",textTransform:"uppercase",marginBottom:7}}>{t.origin}</div>
