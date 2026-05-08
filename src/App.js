@@ -1,4 +1,4 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG } from "./data";
 
@@ -128,7 +128,7 @@ function LoginPage({t}){
   const [pass,setPass]=useState("");
   const [error,setError]=useState("");
   const [loading,setLoading]=useState(false);
-  const {signIn,isLoaded}=require("@clerk/clerk-react").useSignIn();
+  const {signIn,isLoaded}=useSignIn();
   const handleLogin=async(e)=>{
     e.preventDefault();if(!isLoaded)return;
     setLoading(true);setError("");
