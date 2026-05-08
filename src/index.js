@@ -4,7 +4,7 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import App from './App';
 
 // Clé Clerk publique — safe à mettre dans le code
-const PUBLISHABLE_KEY = "pk_live_Y2xlcmsuYXZvY2Fkby1wcm8ucGFnZXMuZGV2JA";
+const PUBLISHABLE_KEY = "pk_test_bmVhdC1jdWItNTcuY2xlcmsuYWNjb3VudHMuZGV2JA";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
