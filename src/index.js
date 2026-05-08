@@ -5,7 +5,7 @@ import App from './App';
 
 // Clé Clerk publique — safe à mettre dans le code
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY 
-  || "pk_test_bmVhdC1jdWItNTcuY2xlcmsuYWNjb3VudHMuZGV2JA";
+  || "pk_live_Y2xlcmsuYXZvY2Fkby1wcm8ucGFnZXMuZGV2JA";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
