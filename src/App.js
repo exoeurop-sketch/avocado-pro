@@ -8,7 +8,7 @@ const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
 // ─── TRADUCTIONS ──────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🔮 Analyse IA"],
+    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🔮 Analyse IA","📋 Mon Stock"],
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
@@ -50,9 +50,22 @@ const T = {
     fcTableTitle:"Tableau prévisionnel par calibre & origine",
     fcTrendBig:"Grands (14-18)", fcTrendMid:"Moyens (20-22)", fcTrendSml:"Petits (24-32)",
     fcImpactHigh:"Impact fort", fcImpactMid:"Impact moyen", fcImpactLow:"Impact faible",
+    stockTitle:"📋 Mon Stock", stockSub:"Comparaison achats vs prix du marché",
+    stockTotalQty:"Total caisses", stockTotalCost:"Valeur achat",
+    stockTotalMarket:"Valeur marché", stockGain:"Plus-value",
+    stockAddTitle:"Ajouter un achat", stockDate:"Date", stockOrigin:"Origine",
+    stockCal:"Calibre", stockQty:"Qté caisses", stockPrice:"Prix payé €/caisse",
+    stockBtnAdd:"+ Ajouter", stockBtnImport:"📂 Importer CSV/Excel",
+    stockBtnExport:"📥 Exporter CSV", stockBtnClear:"🗑️ Tout effacer",
+    stockColMarket:"Prix marché", stockColEcart:"Écart",
+    stockEmpty:"Aucun achat enregistré. Ajoutez votre premier achat ci-dessus ou importez un fichier.",
+    stockImportError:"Format invalide. Colonnes attendues : Date,Origine,Calibre,Qté,Prix",
+    stockImportHelp:"Format : Date,Origine,Calibre,Qté,Prix (1 ligne d'en-tête)",
+    stockConfirmClear:"Effacer tous les achats ? Cette action est irréversible.",
+    stockGoodBuy:"🟢 Bon", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
   },
   en: {
-    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🔮 AI Analysis"],
+    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🔮 AI Analysis","📋 My Stock"],
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
     col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
@@ -94,9 +107,22 @@ const T = {
     fcTableTitle:"Forecast table by grade & origin",
     fcTrendBig:"Large (14-18)", fcTrendMid:"Medium (20-22)", fcTrendSml:"Small (24-32)",
     fcImpactHigh:"High impact", fcImpactMid:"Medium impact", fcImpactLow:"Low impact",
+    stockTitle:"📋 My Stock", stockSub:"Compare purchases vs market price",
+    stockTotalQty:"Total boxes", stockTotalCost:"Purchase value",
+    stockTotalMarket:"Market value", stockGain:"Gain/Loss",
+    stockAddTitle:"Add purchase", stockDate:"Date", stockOrigin:"Origin",
+    stockCal:"Grade", stockQty:"Boxes qty", stockPrice:"Paid €/box",
+    stockBtnAdd:"+ Add", stockBtnImport:"📂 Import CSV/Excel",
+    stockBtnExport:"📥 Export CSV", stockBtnClear:"🗑️ Clear all",
+    stockColMarket:"Market price", stockColEcart:"Spread",
+    stockEmpty:"No purchases recorded. Add your first purchase above or import a file.",
+    stockImportError:"Invalid format. Expected columns: Date,Origin,Grade,Qty,Price",
+    stockImportHelp:"Format: Date,Origin,Grade,Qty,Price (1 header row)",
+    stockConfirmClear:"Clear all purchases? This action is irreversible.",
+    stockGoodBuy:"🟢 Good", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
   },
   es: {
-    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🔮 Análisis IA"],
+    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🔮 Análisis IA","📋 Mi Stock"],
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
@@ -138,6 +164,19 @@ const T = {
     fcTableTitle:"Tabla previsional por calibre y origen",
     fcTrendBig:"Grandes (14-18)", fcTrendMid:"Medianos (20-22)", fcTrendSml:"Pequeños (24-32)",
     fcImpactHigh:"Impacto alto", fcImpactMid:"Impacto medio", fcImpactLow:"Impacto bajo",
+    stockTitle:"📋 Mi Stock", stockSub:"Compara compras vs precio de mercado",
+    stockTotalQty:"Total cajas", stockTotalCost:"Valor compra",
+    stockTotalMarket:"Valor mercado", stockGain:"Ganancia/Pérdida",
+    stockAddTitle:"Agregar compra", stockDate:"Fecha", stockOrigin:"Origen",
+    stockCal:"Calibre", stockQty:"Cant. cajas", stockPrice:"Pagado €/caja",
+    stockBtnAdd:"+ Agregar", stockBtnImport:"📂 Importar CSV/Excel",
+    stockBtnExport:"📥 Exportar CSV", stockBtnClear:"🗑️ Borrar todo",
+    stockColMarket:"Precio mercado", stockColEcart:"Diferencia",
+    stockEmpty:"No hay compras registradas. Agregue su primera compra arriba o importe un archivo.",
+    stockImportError:"Formato inválido. Columnas esperadas: Fecha,Origen,Calibre,Cant.,Precio",
+    stockImportHelp:"Formato: Fecha,Origen,Calibre,Cant.,Precio (1 fila de encabezado)",
+    stockConfirmClear:"¿Borrar todas las compras? Esta acción es irreversible.",
+    stockGoodBuy:"🟢 Bueno", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
   },
 };
 
@@ -201,6 +240,69 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   const[ratesStatus,setRatesStatus]=useState("loading");
   const[aiText,setAiText]=useState("");
   const[aiLoading,setAiLoading]=useState(false);
+  // ─── STOCK ─────────────────────────────────────────────────────────────
+  const[stock,setStock]=useState(()=>{try{return JSON.parse(localStorage.getItem("hm_stock")||"[]");}catch{return[];}});
+  const[stockForm,setStockForm]=useState({date:new Date().toISOString().slice(0,10),origin:"Peru",cal:18,qty:"",price:""});
+  useEffect(()=>{localStorage.setItem("hm_stock",JSON.stringify(stock));},[stock]);
+  const stockMarketPrice=(o,c)=>{
+    const w=Math.max(...Object.keys(REAL_PRICES).map(Number));
+    const p=REAL_PRICES[w]?.[o]?.[c];
+    if(!p)return null;
+    return (p[0]+p[1])/2; // moyenne min-max
+  };
+  const stockAddRow=()=>{
+    if(!stockForm.qty||!stockForm.price)return;
+    const r={...stockForm,qty:Number(stockForm.qty),price:Number(stockForm.price),id:Date.now()};
+    setStock([r,...stock]);
+    setStockForm({...stockForm,qty:"",price:""});
+  };
+  const stockDeleteRow=(id)=>setStock(stock.filter(r=>r.id!==id));
+  const stockClearAll=()=>{if(window.confirm(t.stockConfirmClear))setStock([]);};
+  const stockExport=()=>{
+    const csv=["Date,Origine,Calibre,Quantité,Prix payé (€/caisse),Prix marché (€/caisse),Écart %"];
+    stock.forEach(r=>{
+      const m=stockMarketPrice(r.origin,r.cal);
+      const ecart=m?(((m-r.price)/m)*100).toFixed(1):"";
+      csv.push(`${r.date},${r.origin},${r.cal},${r.qty},${r.price.toFixed(2)},${m?m.toFixed(2):"N/A"},${ecart}`);
+    });
+    const blob=new Blob([csv.join("\n")],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");a.href=url;a.download=`stock_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+    URL.revokeObjectURL(url);
+  };
+  const stockImport=(file)=>{
+    const reader=new FileReader();
+    reader.onload=(e)=>{
+      const text=e.target.result;
+      const lines=text.split(/\r?\n/).filter(l=>l.trim());
+      const rows=[];
+      for(let i=1;i<lines.length;i++){ // skip header
+        const cols=lines[i].split(/[,;\t]/);
+        if(cols.length<5)continue;
+        const r={
+          date:cols[0].trim(),
+          origin:cols[1].trim(),
+          cal:Number(cols[2]),
+          qty:Number(cols[3]),
+          price:Number(cols[4]),
+          id:Date.now()+i
+        };
+        if(r.qty&&r.price&&r.cal&&ORIGIN_FLAG[r.origin])rows.push(r);
+      }
+      if(rows.length)setStock([...rows,...stock]);
+      else alert(t.stockImportError);
+    };
+    reader.readAsText(file);
+  };
+  const stockTotals=stock.reduce((acc,r)=>{
+    const m=stockMarketPrice(r.origin,r.cal);
+    acc.qty+=r.qty;
+    acc.cost+=r.qty*r.price;
+    if(m)acc.market+=r.qty*m;
+    return acc;
+  },{qty:0,cost:0,market:0});
+  const stockGain=stockTotals.market-stockTotals.cost;
+  const stockGainPct=stockTotals.cost>0?(stockGain/stockTotals.cost)*100:0;
   const t=T[lang];
   const allWeeks=Object.keys(REAL_PRICES).map(Number).sort();
   const cfg={color:ORIGIN_COLOR[origin],flag:ORIGIN_FLAG[origin]};
@@ -506,6 +608,128 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
             {aiText?<div style={{background:"#ffffff",borderRadius:10,padding:14,fontSize:13,lineHeight:1.8,color:"#065f46",borderLeft:"3px solid #4ade80"}}>{aiText}</div>
             :!aiLoading&&<div style={{fontSize:11,color:"#374151",textAlign:"center",padding:"20px 0"}}>{t.aiPlaceholder}</div>}
           </div>
+        </div>)}
+
+        {tab===5&&(<div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:12}}>
+            <div>
+              <div style={{fontSize:16,fontWeight:700,color:"#374151"}}>{t.stockTitle}</div>
+              <div style={{fontSize:11,color:"#6b7280",marginTop:2}}>{t.stockSub}</div>
+            </div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+              <label style={{padding:"7px 12px",borderRadius:8,border:"1px solid #4ade80",background:"#f0fdf4",color:"#16a34a",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>
+                {t.stockBtnImport}
+                <input type="file" accept=".csv,.tsv,.txt" onChange={(e)=>{if(e.target.files[0])stockImport(e.target.files[0]);e.target.value="";}} style={{display:"none"}}/>
+              </label>
+              {stock.length>0&&<button onClick={stockExport} style={{padding:"7px 12px",borderRadius:8,border:"1px solid #60a5fa",background:"#eff6ff",color:"#2563eb",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{t.stockBtnExport}</button>}
+              {stock.length>0&&<button onClick={stockClearAll} style={{padding:"7px 12px",borderRadius:8,border:"1px solid #f87171",background:"#fef2f2",color:"#dc2626",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{t.stockBtnClear}</button>}
+            </div>
+          </div>
+
+          {stock.length>0&&(
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:14}}>
+              <div style={{background:"#f8f9fa",borderRadius:12,border:"1px solid #dee2e6",padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockTotalQty}</div>
+                <div style={{fontSize:20,fontWeight:700,color:"#374151",fontFamily:"'Space Mono',monospace",marginTop:4}}>{stockTotals.qty}</div>
+              </div>
+              <div style={{background:"#fef3c7",borderRadius:12,border:"1px solid #fbbf24",padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:"#92400e",textTransform:"uppercase",fontWeight:600}}>{t.stockTotalCost}</div>
+                <div style={{fontSize:20,fontWeight:700,color:"#92400e",fontFamily:"'Space Mono',monospace",marginTop:4}}>{stockTotals.cost.toFixed(0)}€</div>
+              </div>
+              <div style={{background:"#dbeafe",borderRadius:12,border:"1px solid #60a5fa",padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:"#1e40af",textTransform:"uppercase",fontWeight:600}}>{t.stockTotalMarket}</div>
+                <div style={{fontSize:20,fontWeight:700,color:"#1e40af",fontFamily:"'Space Mono',monospace",marginTop:4}}>{stockTotals.market.toFixed(0)}€</div>
+              </div>
+              <div style={{background:stockGain>=0?"#dcfce7":"#fee2e2",borderRadius:12,border:`1px solid ${stockGain>=0?"#4ade80":"#f87171"}`,padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:stockGain>=0?"#166534":"#991b1b",textTransform:"uppercase",fontWeight:600}}>{t.stockGain}</div>
+                <div style={{fontSize:20,fontWeight:700,color:stockGain>=0?"#166534":"#991b1b",fontFamily:"'Space Mono',monospace",marginTop:4}}>{stockGain>=0?"+":""}{stockGain.toFixed(0)}€</div>
+                <div style={{fontSize:10,color:stockGain>=0?"#166534":"#991b1b",fontWeight:600,marginTop:2}}>{stockGain>=0?"+":""}{stockGainPct.toFixed(1)}%</div>
+              </div>
+            </div>
+          )}
+
+          <div style={{background:"#f8f9fa",borderRadius:12,border:"1px solid #dee2e6",padding:14,marginBottom:14}}>
+            <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>{t.stockAddTitle}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:8}}>
+              <div>
+                <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.stockDate}</div>
+                <input type="date" value={stockForm.date} onChange={e=>setStockForm({...stockForm,date:e.target.value})} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+              </div>
+              <div>
+                <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.stockOrigin}</div>
+                <select value={stockForm.origin} onChange={e=>setStockForm({...stockForm,origin:e.target.value})} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box",background:"white"}}>
+                  {ORIGINS.map(o=><option key={o} value={o}>{ORIGIN_FLAG[o]} {t.origins[o]}</option>)}
+                </select>
+              </div>
+              <div>
+                <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.stockCal}</div>
+                <select value={stockForm.cal} onChange={e=>setStockForm({...stockForm,cal:Number(e.target.value)})} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box",background:"white"}}>
+                  {CALIBRES_LIST.map(c=><option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div>
+                <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.stockQty}</div>
+                <input type="number" min="1" placeholder="100" value={stockForm.qty} onChange={e=>setStockForm({...stockForm,qty:e.target.value})} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+              </div>
+              <div>
+                <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.stockPrice}</div>
+                <input type="number" step="0.01" min="0" placeholder="11.50" value={stockForm.price} onChange={e=>setStockForm({...stockForm,price:e.target.value})} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+              </div>
+              <div style={{display:"flex",alignItems:"flex-end"}}>
+                <button onClick={stockAddRow} disabled={!stockForm.qty||!stockForm.price} style={{width:"100%",padding:"7px 10px",borderRadius:6,border:"none",background:(!stockForm.qty||!stockForm.price)?"#dee2e6":"linear-gradient(135deg,#16a34a,#15803d)",color:(!stockForm.qty||!stockForm.price)?"#9ca3af":"white",fontSize:12,fontWeight:700,cursor:(!stockForm.qty||!stockForm.price)?"not-allowed":"pointer",fontFamily:"inherit"}}>{t.stockBtnAdd}</button>
+              </div>
+            </div>
+            <div style={{fontSize:10,color:"#9ca3af",marginTop:8,fontStyle:"italic"}}>💡 {t.stockImportHelp}</div>
+          </div>
+
+          {stock.length===0?(
+            <div style={{background:"#f9fafb",borderRadius:12,border:"2px dashed #dee2e6",padding:"40px 20px",textAlign:"center"}}>
+              <div style={{fontSize:36,marginBottom:8}}>📋</div>
+              <div style={{fontSize:13,color:"#6b7280"}}>{t.stockEmpty}</div>
+            </div>
+          ):(
+            <div style={{background:"#ffffff",borderRadius:12,border:"1px solid #dee2e6",overflow:"auto"}}>
+              <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
+                <thead style={{background:"#f8f9fa",borderBottom:"2px solid #dee2e6"}}>
+                  <tr>
+                    <th style={{padding:"10px 12px",textAlign:"left",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockDate}</th>
+                    <th style={{padding:"10px 12px",textAlign:"left",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockOrigin}</th>
+                    <th style={{padding:"10px 12px",textAlign:"center",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockCal}</th>
+                    <th style={{padding:"10px 12px",textAlign:"center",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockQty}</th>
+                    <th style={{padding:"10px 12px",textAlign:"right",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockPrice}</th>
+                    <th style={{padding:"10px 12px",textAlign:"right",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockColMarket}</th>
+                    <th style={{padding:"10px 12px",textAlign:"center",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.stockColEcart}</th>
+                    <th style={{padding:"10px 12px",textAlign:"center",fontSize:10,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stock.map(r=>{
+                    const m=stockMarketPrice(r.origin,r.cal);
+                    const isKg=r.cal>=26;
+                    const ecart=m?(((m-r.price)/m)*100):null;
+                    const status=ecart===null?{lbl:"—",col:"#9ca3af"}:ecart>=5?{lbl:t.stockGoodBuy,col:"#16a34a"}:ecart<=-5?{lbl:t.stockBadBuy,col:"#dc2626"}:{lbl:t.stockOkBuy,col:"#ca8a04"};
+                    return(
+                      <tr key={r.id} style={{borderBottom:"1px solid #f3f4f6"}}>
+                        <td style={{padding:"10px 12px",color:"#374151",fontFamily:"'Space Mono',monospace"}}>{r.date}</td>
+                        <td style={{padding:"10px 12px",color:"#374151"}}>{ORIGIN_FLAG[r.origin]} {t.origins[r.origin]}</td>
+                        <td style={{padding:"10px 12px",textAlign:"center",fontWeight:700,color:"#374151",fontFamily:"'Space Mono',monospace"}}>{r.cal}</td>
+                        <td style={{padding:"10px 12px",textAlign:"center",color:"#374151",fontFamily:"'Space Mono',monospace"}}>{r.qty}</td>
+                        <td style={{padding:"10px 12px",textAlign:"right",color:"#92400e",fontWeight:700,fontFamily:"'Space Mono',monospace"}}>{r.price.toFixed(2)}€{isKg?"/kg":""}</td>
+                        <td style={{padding:"10px 12px",textAlign:"right",color:"#1e40af",fontWeight:700,fontFamily:"'Space Mono',monospace"}}>{m?`${m.toFixed(2)}€${isKg?"/kg":""}`:"—"}</td>
+                        <td style={{padding:"10px 12px",textAlign:"center",fontFamily:"'Space Mono',monospace",fontWeight:700,color:status.col}}>
+                          {ecart!==null?`${ecart>0?"+":""}${ecart.toFixed(1)}%`:"—"}
+                          <div style={{fontSize:9,fontWeight:600,marginTop:2}}>{status.lbl}</div>
+                        </td>
+                        <td style={{padding:"10px 12px",textAlign:"center"}}>
+                          <button onClick={()=>stockDeleteRow(r.id)} style={{background:"transparent",border:"none",color:"#dc2626",fontSize:14,cursor:"pointer",padding:4}} title="Supprimer">✕</button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>)}
       </div>
     </div>
