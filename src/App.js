@@ -1,6 +1,6 @@
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -8,7 +8,7 @@ const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
 // ─── TRADUCTIONS ──────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🔮 Analyse IA","📋 Mon Stock"],
+    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🇵🇪 Saison Pérou","🔮 Analyse IA","📋 Mon Stock"],
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
@@ -63,9 +63,21 @@ const T = {
     stockImportHelp:"Format : Date,Origine,Calibre,Qté,Prix (1 ligne d'en-tête)",
     stockConfirmClear:"Effacer tous les achats ? Cette action est irréversible.",
     stockGoodBuy:"🟢 Bon", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
+    psTitle:"🇵🇪 Saison Pérou 2026", psSub:"Données officielles ProHass / SENASA",
+    psInsightsTitle:"Indicateurs clés saison 2026",
+    psWeeklyTitle:"Volumes hebdomadaires 2026 (TM)",
+    psDestEurope:"Europe", psDestUSA:"USA", psDestAsia:"Asie", psDestTotal:"Total",
+    psCountriesTitle:"Répartition par pays destinataire 2026",
+    psRegionsTitle:"Régions productrices Pérou",
+    psRegionsSub:"Hectares + producteurs + calendrier de récolte",
+    psHectaresTitle:"Évolution hectares Pérou (2018-2025)",
+    psPeak:"Pic récolte", psHa:"ha", psProducers:"producteurs",
+    psYearTitle:"Évolution annuelle exports Pérou (TM)",
+    psWorldHaTitle:"Hectares mondiales 2025 (top 10)",
+    psWeekShort:"S", psMonthly:"Mensuel",
   },
   en: {
-    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🔮 AI Analysis","📋 My Stock"],
+    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🇵🇪 Peru Season","🔮 AI Analysis","📋 My Stock"],
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
     col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
@@ -120,9 +132,21 @@ const T = {
     stockImportHelp:"Format: Date,Origin,Grade,Qty,Price (1 header row)",
     stockConfirmClear:"Clear all purchases? This action is irreversible.",
     stockGoodBuy:"🟢 Good", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
+    psTitle:"🇵🇪 Peru Season 2026", psSub:"Official ProHass / SENASA data",
+    psInsightsTitle:"Key season 2026 indicators",
+    psWeeklyTitle:"Weekly volumes 2026 (MT)",
+    psDestEurope:"Europe", psDestUSA:"USA", psDestAsia:"Asia", psDestTotal:"Total",
+    psCountriesTitle:"Distribution by destination country 2026",
+    psRegionsTitle:"Peru producing regions",
+    psRegionsSub:"Hectares + producers + harvest calendar",
+    psHectaresTitle:"Peru hectares evolution (2018-2025)",
+    psPeak:"Harvest peak", psHa:"ha", psProducers:"producers",
+    psYearTitle:"Yearly Peru exports evolution (MT)",
+    psWorldHaTitle:"World hectares 2025 (top 10)",
+    psWeekShort:"W", psMonthly:"Monthly",
   },
   es: {
-    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🔮 Análisis IA","📋 Mi Stock"],
+    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🇵🇪 Temporada Perú","🔮 Análisis IA","📋 Mi Stock"],
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
@@ -177,12 +201,25 @@ const T = {
     stockImportHelp:"Formato: Fecha,Origen,Calibre,Cant.,Precio (1 fila de encabezado)",
     stockConfirmClear:"¿Borrar todas las compras? Esta acción es irreversible.",
     stockGoodBuy:"🟢 Bueno", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
+    psTitle:"🇵🇪 Temporada Perú 2026", psSub:"Datos oficiales ProHass / SENASA",
+    psInsightsTitle:"Indicadores clave temporada 2026",
+    psWeeklyTitle:"Volúmenes semanales 2026 (TM)",
+    psDestEurope:"Europa", psDestUSA:"EE.UU.", psDestAsia:"Asia", psDestTotal:"Total",
+    psCountriesTitle:"Distribución por país destino 2026",
+    psRegionsTitle:"Regiones productoras Perú",
+    psRegionsSub:"Hectáreas + productores + calendario de cosecha",
+    psHectaresTitle:"Evolución hectáreas Perú (2018-2025)",
+    psPeak:"Pico cosecha", psHa:"ha", psProducers:"productores",
+    psYearTitle:"Evolución anual exportaciones Perú (TM)",
+    psWorldHaTitle:"Hectáreas mundiales 2025 (top 10)",
+    psWeekShort:"S", psMonthly:"Mensual",
   },
 };
 
 const FLAG_MAP={NL:"🇳🇱",ES:"🇪🇸",DE:"🇩🇪",UK:"🇬🇧",BE:"🇧🇪",FR:"🇫🇷"};
 const ORIGINS=Object.keys(ORIGIN_COLOR);
 function getTrend(o,c){const p16=REAL_PRICES[16]?.[o]?.[c];const p18=REAL_PRICES[18]?.[o]?.[c];if(!p16||!p18)return"—";const d=((p18[0]+p18[1])/2)-((p16[0]+p16[1])/2);return d>0.3?"↗":d<-0.3?"↘":"=";}
+function y2026Footnote(lang){return lang==="es"?"Proyección 2026 — Fuente ProHass":lang==="en"?"2026 projection — Source ProHass":"Projection 2026 — Source ProHass";}
 function trendColor(t){return t==="↗"||t==="↗↗"?"#4ade80":t==="↘"||t==="↘↘"?"#f87171":"#fbbf24";}
 function Tag({label,active,onClick,color="#4ade80"}){return <button onClick={onClick} style={{padding:"5px 11px",borderRadius:20,border:`1px solid ${active?color:"#dee2e6"}`,background:active?`${color}18`:"transparent",color:active?color:"#4b5563",fontSize:12,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>{label}</button>;}
 
@@ -571,6 +608,173 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
         </div>)}
 
         {tab===4&&(<div>
+          {/* HEADER */}
+          <div style={{marginBottom:14}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#374151"}}>{t.psTitle}</div>
+            <div style={{fontSize:11,color:"#6b7280",marginTop:2}}>{t.psSub}</div>
+          </div>
+
+          {/* INSIGHTS KEY METRICS */}
+          <div style={{marginBottom:18}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:8}}>{t.psInsightsTitle}</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:10}}>
+              {PERU_2026_INSIGHTS.map((ins,i)=>(
+                <div key={i} style={{background:"#f0fdf4",borderRadius:12,border:"1px solid #4ade80",padding:"12px 14px"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+                    <span style={{fontSize:18}}>{ins.icon}</span>
+                    <span style={{fontSize:10,color:"#166534",fontWeight:600,textTransform:"uppercase"}}>{ins.title}</span>
+                  </div>
+                  <div style={{fontSize:18,fontWeight:800,color:"#15803d",fontFamily:"'Space Mono',monospace"}}>{ins.value}</div>
+                  <div style={{fontSize:10,color:"#166534",marginTop:4,lineHeight:1.4}}>{ins.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* WEEKLY VOLUMES CHART */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:14}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>{t.psWeeklyTitle}</div>
+            <div style={{display:"flex",gap:8,marginBottom:10,fontSize:10,flexWrap:"wrap"}}>
+              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#16a34a",borderRadius:2,display:"inline-block"}}></span>{t.psDestEurope}</span>
+              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#f59e0b",borderRadius:2,display:"inline-block"}}></span>{t.psDestUSA}</span>
+              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#dc2626",borderRadius:2,display:"inline-block"}}></span>{t.psDestAsia}</span>
+            </div>
+            <div style={{display:"flex",alignItems:"flex-end",gap:2,height:160,padding:"0 4px",overflowX:"auto"}}>
+              {[14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35].map(w=>{
+                const eu=PERU_WEEKLY_EUROPE[w]||0;
+                const us=PERU_WEEKLY_USA[w]||0;
+                const as=PERU_WEEKLY_ASIA[w]||0;
+                const tot=eu+us+as;
+                const max=40000;
+                const isCurrent=w===LATEST_WEEK;
+                return(
+                  <div key={w} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,minWidth:24}}>
+                    <div style={{fontSize:8,color:"#6b7280",fontFamily:"'Space Mono',monospace"}}>{Math.round(tot/1000)}k</div>
+                    <div style={{display:"flex",flexDirection:"column-reverse",width:18,height:120,justifyContent:"flex-start"}}>
+                      <div style={{height:`${(eu/max)*120}px`,background:"#16a34a",width:"100%"}} title={`Europe: ${eu} TM`}></div>
+                      <div style={{height:`${(us/max)*120}px`,background:"#f59e0b",width:"100%"}} title={`USA: ${us} TM`}></div>
+                      <div style={{height:`${(as/max)*120}px`,background:"#dc2626",width:"100%"}} title={`Asia: ${as} TM`}></div>
+                    </div>
+                    <div style={{fontSize:9,color:isCurrent?"#16a34a":"#6b7280",fontWeight:isCurrent?700:400,fontFamily:"'Space Mono',monospace"}}>{t.psWeekShort}{w}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* COUNTRIES BREAKDOWN */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:12,marginBottom:14}}>
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>🇪🇺 {t.psDestEurope} 2026</div>
+              {PERU_EUROPE_BY_COUNTRY.map((c,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",fontSize:11}}>
+                  <span style={{minWidth:120,color:"#374151"}}>{c.flag} {c.country}</span>
+                  <div style={{flex:1,height:8,background:"#e5e7eb",borderRadius:4,overflow:"hidden"}}>
+                    <div style={{width:`${c.pct*2}%`,height:"100%",background:"#16a34a"}}></div>
+                  </div>
+                  <span style={{minWidth:50,textAlign:"right",fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d"}}>{c.pct}%</span>
+                  <span style={{minWidth:40,textAlign:"right",fontSize:10,fontFamily:"'Space Mono',monospace",color:c.evol>0?"#16a34a":"#dc2626",fontWeight:700}}>{c.evol>0?"+":""}{c.evol}%</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>🌏 {t.psDestAsia} 2026</div>
+              {PERU_ASIA_BY_COUNTRY.map((c,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",fontSize:11}}>
+                  <span style={{minWidth:120,color:"#374151"}}>{c.flag} {c.country}</span>
+                  <div style={{flex:1,height:8,background:"#e5e7eb",borderRadius:4,overflow:"hidden"}}>
+                    <div style={{width:`${Math.min(c.pct*2,100)}%`,height:"100%",background:"#dc2626"}}></div>
+                  </div>
+                  <span style={{minWidth:50,textAlign:"right",fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#dc2626"}}>{c.pct}%</span>
+                  <span style={{minWidth:40,textAlign:"right",fontSize:10,fontFamily:"'Space Mono',monospace",color:c.evol>0?"#16a34a":"#dc2626",fontWeight:700}}>{c.evol>0?"+":""}{c.evol}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* PERU REGIONS TABLE */}
+          <div style={{background:"#ffffff",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:14,overflow:"auto"}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:4}}>{t.psRegionsTitle}</div>
+            <div style={{fontSize:10,color:"#6b7280",marginBottom:10}}>{t.psRegionsSub}</div>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
+              <thead>
+                <tr style={{borderBottom:"2px solid #dee2e6"}}>
+                  <th style={{padding:"8px 6px",textAlign:"left",fontSize:9,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>Region</th>
+                  <th style={{padding:"8px 6px",textAlign:"right",fontSize:9,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.psHa}</th>
+                  <th style={{padding:"8px 6px",textAlign:"right",fontSize:9,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.psProducers}</th>
+                  <th style={{padding:"8px 6px",textAlign:"center",fontSize:9,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>F M A M J J A S</th>
+                  <th style={{padding:"8px 6px",textAlign:"left",fontSize:9,color:"#6b7280",textTransform:"uppercase",fontWeight:600}}>{t.psPeak}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PERU_REGIONS.map((r,i)=>(
+                  <tr key={i} style={{borderBottom:"1px solid #f3f4f6"}}>
+                    <td style={{padding:"7px 6px",fontWeight:700,color:"#374151"}}>{r.name}<div style={{fontSize:9,color:"#9ca3af",fontWeight:400}}>{r.note}</div></td>
+                    <td style={{padding:"7px 6px",textAlign:"right",fontFamily:"'Space Mono',monospace",color:"#15803d",fontWeight:700}}>{r.ha.toLocaleString()}</td>
+                    <td style={{padding:"7px 6px",textAlign:"right",fontFamily:"'Space Mono',monospace",color:"#374151"}}>{r.producers.toLocaleString()}</td>
+                    <td style={{padding:"7px 6px",textAlign:"center"}}>
+                      <div style={{display:"inline-flex",gap:1}}>
+                        {[2,3,4,5,6,7,8,9].map(m=>(
+                          <span key={m} style={{width:12,height:12,borderRadius:2,background:r.harvestMonths.includes(m)?"#16a34a":"#e5e7eb",display:"inline-block"}}></span>
+                        ))}
+                      </div>
+                    </td>
+                    <td style={{padding:"7px 6px",fontSize:10,color:"#16a34a",fontWeight:600}}>{r.peak}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* HECTARES EVOLUTION */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:12,marginBottom:14}}>
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>{t.psHectaresTitle}</div>
+              {Object.entries(PERU_HECTARES_HISTORY).map(([y,h])=>{
+                const max=85000;
+                return(
+                  <div key={y} style={{display:"flex",alignItems:"center",gap:8,padding:"3px 0",fontSize:11}}>
+                    <span style={{minWidth:40,color:"#6b7280",fontFamily:"'Space Mono',monospace"}}>{y}</span>
+                    <div style={{flex:1,height:14,background:"#e5e7eb",borderRadius:3,overflow:"hidden"}}>
+                      <div style={{width:`${(h/max)*100}%`,height:"100%",background:"linear-gradient(90deg,#16a34a,#15803d)"}}></div>
+                    </div>
+                    <span style={{minWidth:60,textAlign:"right",fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d"}}>{h.toLocaleString()}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>{t.psYearTitle}</div>
+              {Object.keys(PERU_ANNUAL_TOTAL).map(y=>{
+                const tot=PERU_ANNUAL_TOTAL[y];
+                const eu=PERU_ANNUAL_EUROPE[y]||0;
+                const us=PERU_ANNUAL_USA[y]||0;
+                const as=PERU_ANNUAL_ASIA[y]||0;
+                const max=800000;
+                const isProj=y==="2026";
+                return(
+                  <div key={y} style={{padding:"3px 0",fontSize:11}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:2}}>
+                      <span style={{minWidth:50,color:"#6b7280",fontFamily:"'Space Mono',monospace"}}>{y}{isProj?"*":""}</span>
+                      <span style={{flex:1,fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d",fontSize:12}}>{tot.toLocaleString()} TM</span>
+                    </div>
+                    <div style={{display:"flex",height:8,borderRadius:3,overflow:"hidden",background:"#e5e7eb"}}>
+                      <div style={{width:`${(eu/max)*100}%`,background:"#16a34a"}} title={`EU: ${eu}`}></div>
+                      <div style={{width:`${(us/max)*100}%`,background:"#f59e0b"}} title={`USA: ${us}`}></div>
+                      <div style={{width:`${(as/max)*100}%`,background:"#dc2626"}} title={`Asia: ${as}`}></div>
+                    </div>
+                  </div>
+                );
+              })}
+              <div style={{fontSize:9,color:"#9ca3af",marginTop:8,fontStyle:"italic"}}>* {y2026Footnote(lang)}</div>
+            </div>
+          </div>
+
+        </div>)}
+
+        {tab===5&&(<div>
           <div style={{display:"flex",gap:10,marginBottom:12,flexWrap:"wrap"}}>
             <div style={{background:"#f8f9fa",borderRadius:12,border:"1px solid #dee2e6",padding:"12px 14px",flex:2,minWidth:220}}>
               <div style={{fontSize:10,color:"#4b5563",textTransform:"uppercase",marginBottom:7}}>{t.origin}</div>
@@ -610,7 +814,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
           </div>
         </div>)}
 
-        {tab===5&&(<div>
+        {tab===6&&(<div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:12}}>
             <div>
               <div style={{fontSize:16,fontWeight:700,color:"#374151"}}>{t.stockTitle}</div>
