@@ -1,7 +1,7 @@
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import LegalFooter from "./Legal";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -76,6 +76,10 @@ const T = {
     psYearTitle:"Évolution annuelle exports Pérou (TM)",
     psWorldHaTitle:"Hectares mondiales 2025 (top 10)",
     psWeekShort:"S", psMonthly:"Mensuel",
+    psViewToggle:"Type de volumes :", psViewDeparture:"🚢 Départs Pérou", psViewArrival:"📦 Arrivées Europe",
+    psTransitNote:"⏱️ Transit maritime moyen : 3 semaines (Callao → Rotterdam/Algeciras/Hamburg)",
+    psViewArrivalDesc:"Volumes RÉELS qui arrivent en Europe = ce qui pèse sur les prix EU",
+    psViewDepartureDesc:"Volumes au départ du Pérou = à venir en Europe dans 3 semaines",
   },
   en: {
     tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🇵🇪 Peru Season","🔮 AI Analysis","📋 My Stock"],
@@ -145,6 +149,10 @@ const T = {
     psYearTitle:"Yearly Peru exports evolution (MT)",
     psWorldHaTitle:"World hectares 2025 (top 10)",
     psWeekShort:"W", psMonthly:"Monthly",
+    psViewToggle:"Volume type:", psViewDeparture:"🚢 Peru departures", psViewArrival:"📦 Europe arrivals",
+    psTransitNote:"⏱️ Average maritime transit: 3 weeks (Callao → Rotterdam/Algeciras/Hamburg)",
+    psViewArrivalDesc:"Volumes ACTUALLY arriving in Europe = what really moves EU prices",
+    psViewDepartureDesc:"Volumes leaving Peru = will arrive in Europe in 3 weeks",
   },
   es: {
     tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🇵🇪 Temporada Perú","🔮 Análisis IA","📋 Mi Stock"],
@@ -214,6 +222,10 @@ const T = {
     psYearTitle:"Evolución anual exportaciones Perú (TM)",
     psWorldHaTitle:"Hectáreas mundiales 2025 (top 10)",
     psWeekShort:"S", psMonthly:"Mensual",
+    psViewToggle:"Tipo de volúmenes:", psViewDeparture:"🚢 Salidas Perú", psViewArrival:"📦 Llegadas Europa",
+    psTransitNote:"⏱️ Tránsito marítimo promedio: 3 semanas (Callao → Rotterdam/Algeciras/Hamburg)",
+    psViewArrivalDesc:"Volúmenes que REALMENTE llegan a Europa = lo que afecta precios EU",
+    psViewDepartureDesc:"Volúmenes saliendo de Perú = llegarán a Europa en 3 semanas",
   },
 };
 
@@ -341,6 +353,8 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   },{qty:0,cost:0,market:0});
   const stockGain=stockTotals.market-stockTotals.cost;
   const stockGainPct=stockTotals.cost>0?(stockGain/stockTotals.cost)*100:0;
+  // ─── PERU SEASON : toggle départ / arrivée ──────────────────────────────
+  const[psView,setPsView]=useState("arrival"); // "arrival" = défaut (le plus utile pour les acheteurs EU)
   const t=T[lang];
   const allWeeks=Object.keys(REAL_PRICES).map(Number).sort();
   const cfg={color:ORIGIN_COLOR[origin],flag:ORIGIN_FLAG[origin]};
@@ -505,6 +519,12 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
             <div style={{fontSize:11,color:"#78350f"}}>{t.fcSub}</div>
           </div>
 
+          {/* BANDEAU INFO TRANSIT */}
+          <div style={{background:"#dbeafe",borderRadius:10,border:"1px solid #60a5fa",padding:"8px 12px",marginBottom:12,fontSize:11,color:"#1e40af",lineHeight:1.5}}>
+            ⏱️ <b>{t.psTransitNote.replace("⏱️ ","")}</b><br/>
+            {t.psViewArrivalDesc}
+          </div>
+
           {/* Stratégie acheteur — Carte par semaine */}
           <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
             <div style={{fontSize:13,fontWeight:700,color:"#374151",marginBottom:10}}>{t.fcStrategyTitle}</div>
@@ -632,33 +652,59 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
             </div>
           </div>
 
-          {/* WEEKLY VOLUMES CHART */}
+          {/* WEEKLY VOLUMES CHART avec TOGGLE DÉPART/ARRIVÉE */}
           <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",padding:14,marginBottom:14}}>
-            <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:10}}>{t.psWeeklyTitle}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,marginBottom:10}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase"}}>{t.psWeeklyTitle}</div>
+              <div style={{display:"inline-flex",background:"#ffffff",border:"1px solid #dee2e6",borderRadius:8,padding:3}}>
+                <button onClick={()=>setPsView("arrival")} style={{padding:"5px 10px",borderRadius:6,border:"none",background:psView==="arrival"?"#16a34a":"transparent",color:psView==="arrival"?"white":"#6b7280",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{t.psViewArrival}</button>
+                <button onClick={()=>setPsView("departure")} style={{padding:"5px 10px",borderRadius:6,border:"none",background:psView==="departure"?"#f59e0b":"transparent",color:psView==="departure"?"white":"#6b7280",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{t.psViewDeparture}</button>
+              </div>
+            </div>
+            <div style={{fontSize:10,color:"#6b7280",marginBottom:10,fontStyle:"italic"}}>{psView==="arrival"?t.psViewArrivalDesc:t.psViewDepartureDesc}</div>
+            <div style={{fontSize:9,color:"#9ca3af",marginBottom:10}}>{t.psTransitNote}</div>
             <div style={{display:"flex",gap:8,marginBottom:10,fontSize:10,flexWrap:"wrap"}}>
-              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#16a34a",borderRadius:2,display:"inline-block"}}></span>{t.psDestEurope}</span>
-              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#f59e0b",borderRadius:2,display:"inline-block"}}></span>{t.psDestUSA}</span>
-              <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#dc2626",borderRadius:2,display:"inline-block"}}></span>{t.psDestAsia}</span>
+              {psView==="departure"?(<>
+                <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#16a34a",borderRadius:2,display:"inline-block"}}></span>{t.psDestEurope}</span>
+                <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#f59e0b",borderRadius:2,display:"inline-block"}}></span>{t.psDestUSA}</span>
+                <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#dc2626",borderRadius:2,display:"inline-block"}}></span>{t.psDestAsia}</span>
+              </>):(
+                <span style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,background:"#16a34a",borderRadius:2,display:"inline-block"}}></span>📦 {t.psDestEurope}</span>
+              )}
             </div>
             <div style={{display:"flex",alignItems:"flex-end",gap:2,height:160,padding:"0 4px",overflowX:"auto"}}>
-              {[14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35].map(w=>{
-                const eu=PERU_WEEKLY_EUROPE[w]||0;
-                const us=PERU_WEEKLY_USA[w]||0;
-                const as=PERU_WEEKLY_ASIA[w]||0;
-                const tot=eu+us+as;
-                const max=40000;
+              {[14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38].map(w=>{
+                const max=psView==="departure"?40000:25000;
                 const isCurrent=w===LATEST_WEEK;
-                return(
-                  <div key={w} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,minWidth:24}}>
-                    <div style={{fontSize:8,color:"#6b7280",fontFamily:"'Space Mono',monospace"}}>{Math.round(tot/1000)}k</div>
-                    <div style={{display:"flex",flexDirection:"column-reverse",width:18,height:120,justifyContent:"flex-start"}}>
-                      <div style={{height:`${(eu/max)*120}px`,background:"#16a34a",width:"100%"}} title={`Europe: ${eu} TM`}></div>
-                      <div style={{height:`${(us/max)*120}px`,background:"#f59e0b",width:"100%"}} title={`USA: ${us} TM`}></div>
-                      <div style={{height:`${(as/max)*120}px`,background:"#dc2626",width:"100%"}} title={`Asia: ${as} TM`}></div>
+                if(psView==="departure"){
+                  const eu=PERU_WEEKLY_EUROPE[w]||0;
+                  const us=PERU_WEEKLY_USA[w]||0;
+                  const as=PERU_WEEKLY_ASIA[w]||0;
+                  const tot=eu+us+as;
+                  return(
+                    <div key={w} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,minWidth:24}}>
+                      <div style={{fontSize:8,color:"#6b7280",fontFamily:"'Space Mono',monospace"}}>{Math.round(tot/1000)}k</div>
+                      <div style={{display:"flex",flexDirection:"column-reverse",width:18,height:120,justifyContent:"flex-start"}}>
+                        <div style={{height:`${(eu/max)*120}px`,background:"#16a34a",width:"100%"}} title={`Europe: ${eu} TM`}></div>
+                        <div style={{height:`${(us/max)*120}px`,background:"#f59e0b",width:"100%"}} title={`USA: ${us} TM`}></div>
+                        <div style={{height:`${(as/max)*120}px`,background:"#dc2626",width:"100%"}} title={`Asia: ${as} TM`}></div>
+                      </div>
+                      <div style={{fontSize:9,color:isCurrent?"#f59e0b":"#6b7280",fontWeight:isCurrent?700:400,fontFamily:"'Space Mono',monospace"}}>{t.psWeekShort}{w}</div>
                     </div>
-                    <div style={{fontSize:9,color:isCurrent?"#16a34a":"#6b7280",fontWeight:isCurrent?700:400,fontFamily:"'Space Mono',monospace"}}>{t.psWeekShort}{w}</div>
-                  </div>
-                );
+                  );
+                } else {
+                  // ARRIVÉE EU
+                  const arr=PERU_ARRIVALS_EUROPE[w]||0;
+                  return(
+                    <div key={w} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,minWidth:24}}>
+                      <div style={{fontSize:8,color:arr>20000?"#dc2626":"#6b7280",fontFamily:"'Space Mono',monospace",fontWeight:arr>20000?700:400}}>{Math.round(arr/1000)}k</div>
+                      <div style={{display:"flex",flexDirection:"column-reverse",width:18,height:120,justifyContent:"flex-start"}}>
+                        <div style={{height:`${(arr/max)*120}px`,background:arr>20000?"#dc2626":"#16a34a",width:"100%"}} title={`Arrivée EU: ${arr} TM (départ S${w-TRANSIT_WEEKS})`}></div>
+                      </div>
+                      <div style={{fontSize:9,color:isCurrent?"#16a34a":"#6b7280",fontWeight:isCurrent?700:400,fontFamily:"'Space Mono',monospace"}}>{t.psWeekShort}{w}</div>
+                    </div>
+                  );
+                }
               })}
             </div>
           </div>

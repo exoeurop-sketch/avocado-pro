@@ -68,46 +68,47 @@ export const FORECAST_PRICES = {
     "Brazil":       { 16:[8.50,10.00],18:[8.50,10.00],20:[7.50,8.50],22:[6.50,7.50] },
   },
   22: {
-    "Peru":         { 14:[10.00,11.00],16:[10.00,11.00],18:[10.50,11.50],20:[9.00,10.00],22:[7.50,8.50],24:[6.50,7.50],26:[1.20,1.40],28:[1.10,1.30],30:[1.00,1.20],32:[0.90,1.10] },
-    "Colombia":     { 16:[9.00,10.00],18:[9.00,10.00],20:[8.00,9.00],22:[7.00,8.00],24:[5.50,6.50],26:[1.10,1.30],28:[1.00,1.20],30:[0.90,1.10],32:[0.80,1.00] },
-    "South Africa": { 18:[9.50,10.50],20:[8.50,9.50],22:[7.00,8.00] },
-    "Brazil":       { 18:[8.50,10.00],20:[8.00,9.00] },
+    "Peru":         { 14:[9.50,10.50],16:[9.50,10.50],18:[9.50,10.50],20:[8.00,9.00],22:[6.50,7.50],24:[5.50,6.50],26:[1.00,1.20],28:[0.90,1.10],30:[0.80,1.00],32:[0.70,0.90] },
+    "Colombia":     { 16:[8.50,9.50],18:[8.50,9.50],20:[7.50,8.50],22:[6.00,7.00],24:[4.50,5.50],26:[0.90,1.10],28:[0.80,1.00],30:[0.70,0.90],32:[0.60,0.80] },
+    "South Africa": { 16:[9.00,10.00],18:[9.00,10.00],20:[7.50,8.50],22:[6.00,7.00] },
+    "Brazil":       { 16:[8.00,9.50],18:[8.00,9.50],20:[7.00,8.00],22:[6.00,7.00] },
   },
   23: {
-    "Peru":         { 14:[10.50,11.50],16:[10.50,11.50],18:[11.00,12.00],20:[9.50,10.50],22:[8.00,9.00],24:[7.00,8.00],26:[1.30,1.50],28:[1.20,1.40],30:[1.10,1.30],32:[1.00,1.20] },
-    "Colombia":     { 18:[9.50,10.50],20:[8.50,9.50],22:[7.50,8.50],24:[6.00,7.00],26:[1.20,1.40],28:[1.10,1.30],30:[1.00,1.20] },
-    "South Africa": { 18:[9.00,10.00],20:[8.00,9.00] },
+    "Peru":         { 14:[9.00,10.00],16:[9.00,10.00],18:[9.00,10.00],20:[7.50,8.50],22:[6.00,7.00],24:[5.00,6.00],26:[0.90,1.10],28:[0.80,1.00],30:[0.70,0.90],32:[0.60,0.80] },
+    "Colombia":     { 16:[8.00,9.00],18:[8.00,9.00],20:[7.00,8.00],22:[5.50,6.50],24:[4.00,5.00],26:[0.80,1.00],28:[0.70,0.90],30:[0.60,0.80],32:[0.50,0.70] },
+    "South Africa": { 16:[8.50,9.50],18:[8.50,9.50],20:[7.00,8.00],22:[5.50,6.50] },
+    "Brazil":       { 16:[7.50,9.00],18:[7.50,9.00],20:[6.50,7.50],22:[5.50,6.50] },
   },
 };
 
-// Volume offre EU prévu (M kg/semaine) — selon CIRAD : ~25M stable S20-S22 puis légère hausse S23
-export const FORECAST_SUPPLY = { 20:25.0, 21:25.5, 22:25.0, 23:24.5 };
+// Volumes ARRIVÉE EU prévus (M kg/semaine) — basés sur arrivées réelles (départs Pérou S-3)
+export const FORECAST_SUPPLY = { 20:19.6, 21:20.1, 22:19.8, 23:20.2 };
 
 // Tendance globale par semaine et catégorie de calibres
 // Légende : ↘↘ très baissier · ↘ baissier · = stable · ↗ haussier · ↗↗ très haussier
 export const FORECAST_TREND = {
-  20: { big:"↘", medium:"↘", small:"↘", note:"Peak Pérou + Olmos. Pression maximale sur tous calibres." },
-  21: { big:"↘", medium:"↘", small:"↘↘", note:"Inventaires accumulés, liquidations sur petits calibres." },
-  22: { big:"=", medium:"↗", small:"↘", note:"Sortie Brésil amorcée. Calibres moyens commencent à remonter." },
-  23: { big:"↗", medium:"↗", small:"=", note:"Fin Sierra + Brésil → équilibre courbe calibres. Rebond cal.18-22." },
+  20: { big:"↘", medium:"↘", small:"↘", note:"Arrivées EU 19.6K TM (départs S17). Volumes en hausse, pression confirmée." },
+  21: { big:"↘", medium:"↘", small:"↘↘", note:"Arrivées EU 20.1K TM. Pic d'arrivée approche, prix sous tension." },
+  22: { big:"↘", medium:"↘", small:"↘", note:"Arrivées EU 19.8K TM. Plateau haut, sur-offre maintenue." },
+  23: { big:"↘↘", medium:"↘↘", small:"↘↘", note:"Arrivées EU 20.2K TM. Début pic réel EU (départs S20). Prix au plancher." },
 };
 
 // Carte stratégique acheteur — recommandation par semaine
 export const FORECAST_STRATEGY = {
-  20: { color:"#16a34a", label:"🟢 ACHETER", reason:"Prix au plus bas. Idéal pour gros volumes promotionnels." },
-  21: { color:"#16a34a", label:"🟢 ACHETER", reason:"Petits calibres en liquidation, opportunité industrie/transformation." },
-  22: { color:"#f59e0b", label:"🟡 ATTENDRE", reason:"Transition. Préparer les commandes cal.18-22 pour S23." },
-  23: { color:"#3b82f6", label:"🔵 STOCKER", reason:"Rebond confirmé. Sécuriser les volumes avant montée S24+." },
+  20: { color:"#f59e0b", label:"🟡 SURVEILLER", reason:"Arrivées EU encore modérées (départs S17). Préparer commandes pour S22-S23." },
+  21: { color:"#16a34a", label:"🟢 ACHETER", reason:"Volumes EU en hausse, prix en baisse. Idéal pour gros volumes promotionnels." },
+  22: { color:"#16a34a", label:"🟢 ACHETER", reason:"Sur-offre EU confirmée (~20K TM/sem). Sécuriser les commandes calibres premium." },
+  23: { color:"#16a34a", label:"🟢 ACHETER MAX", reason:"PIC réel arrivées EU (départs S20). Prix au plancher — opportunité maximale." },
 };
 
 // Facteurs climat & contexte (impactent les prévisions)
 export const FORECAST_FACTORS = [
-  { icon:"🌡️", label:"Stress hydrique Pérou Sierra", impact:"Qualité variable, materia seca insuffisante", weight:"medium" },
-  { icon:"🥑", label:"Maluma SA pulpe grise", impact:"Effet contagion sur Hass cal.12-16", weight:"high" },
-  { icon:"🇺🇸", label:"Post Cinco de Mayo", impact:"Libération volumes Mexique/USA → moins de pression", weight:"low" },
-  { icon:"⚗️", label:"Contrôles cadmium Pays-Bas", impact:"Délais 3-4j supplémentaires en commercialisation", weight:"medium" },
-  { icon:"📅", label:"Promotions DE/FR/NL", impact:"Soutien consommation -5% à -15% prix retail", weight:"high" },
-  { icon:"🌿", label:"Olmos Pérou démarrage", impact:"Calibres moyens-grands à partir de S20", weight:"high" },
+  { icon:"📈", label:"Volumes Pérou record 2026", impact:"+8% vs 2025 vers Europe — pression continue S20-S30", weight:"high" },
+  { icon:"⚠️", label:"Pic saison S22-S23", impact:"35 000 TM/sem — sur-offre maximale, prix au plancher", weight:"high" },
+  { icon:"🌿", label:"Olmos Pérou en pleine production", impact:"12 800 ha — calibres moyens-grands abondants S20-S30", weight:"high" },
+  { icon:"📅", label:"Promotions DE/FR/NL", impact:"Soutien consommation -5% à -15% prix retail", weight:"medium" },
+  { icon:"🇺🇸", label:"Diversification USA + Asie (+8%)", impact:"Décharge partielle de la pression Europe", weight:"medium" },
+  { icon:"🇪🇸", label:"Fin saison Espagne", impact:"Disparition concurrence locale, Pérou domine 100%", weight:"low" },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -145,6 +146,31 @@ export const PERU_WEEKLY_ASIA = {
   24:2890,25:3257,26:2872,27:1864,28:1437,29:1081,30:938,31:1990,
   32:1899,33:1920,34:1563,35:1400,
 };
+
+// ─── TRANSIT MARITIME ─────────────────────────────────────────────────────
+// Délai moyen Callao → ports Europe (Rotterdam, Algeciras, Hamburg)
+// Moyenne 3 semaines (21 jours) selon les compagnies maritimes
+export const TRANSIT_WEEKS = 3;
+
+// Calcul automatique des ARRIVÉES Europe = départs S-3
+// Ex: arrivée S22 = départ S19
+export function computeEUArrivals(departures) {
+  const arrivals = {};
+  Object.entries(departures).forEach(([w, tm]) => {
+    const arrivalWeek = Number(w) + TRANSIT_WEEKS;
+    arrivals[arrivalWeek] = tm;
+  });
+  return arrivals;
+}
+
+// Volumes ARRIVÉE en Europe (calculés depuis départs Pérou + 3 semaines)
+// C'est CE QUI PRESSE RÉELLEMENT LES PRIX EU
+export const PERU_ARRIVALS_EUROPE = computeEUArrivals({
+  6:1879,7:2167,8:4297,9:5395,10:7593,11:9358,12:10100,13:12760,14:13317,
+  15:15890,16:19720,17:19620,18:20140,19:19770,20:20240,21:20470,22:20240,23:19790,
+  24:19660,25:17720,26:17640,27:18270,28:18130,29:18250,30:18030,31:15780,
+  32:15220,33:16770,34:16470,35:15510,36:12640,37:10840,38:5810,39:2510,
+});
 
 // Export annuel Pérou TOTAL (TM)
 export const PERU_ANNUAL_TOTAL = {
