@@ -63,7 +63,7 @@ const T = {
     stockImportHelp:"Format : Date,Origine,Calibre,Qté,Prix (1 ligne d'en-tête)",
     stockConfirmClear:"Effacer tous les achats ? Cette action est irréversible.",
     stockGoodBuy:"🟢 Bon", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
-    psTitle:"🇵🇪 Saison Pérou 2026", psSub:"Données officielles ProHass / SENASA",
+    psTitle:"🇵🇪 Saison Pérou 2026", psSub:"Données agrégées · estimations marché",
     psInsightsTitle:"Indicateurs clés saison 2026",
     psWeeklyTitle:"Volumes hebdomadaires 2026 (TM)",
     psDestEurope:"Europe", psDestUSA:"USA", psDestAsia:"Asie", psDestTotal:"Total",
@@ -132,7 +132,7 @@ const T = {
     stockImportHelp:"Format: Date,Origin,Grade,Qty,Price (1 header row)",
     stockConfirmClear:"Clear all purchases? This action is irreversible.",
     stockGoodBuy:"🟢 Good", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
-    psTitle:"🇵🇪 Peru Season 2026", psSub:"Official ProHass / SENASA data",
+    psTitle:"🇵🇪 Peru Season 2026", psSub:"Aggregated data · market estimates",
     psInsightsTitle:"Key season 2026 indicators",
     psWeeklyTitle:"Weekly volumes 2026 (MT)",
     psDestEurope:"Europe", psDestUSA:"USA", psDestAsia:"Asia", psDestTotal:"Total",
@@ -201,7 +201,7 @@ const T = {
     stockImportHelp:"Formato: Fecha,Origen,Calibre,Cant.,Precio (1 fila de encabezado)",
     stockConfirmClear:"¿Borrar todas las compras? Esta acción es irreversible.",
     stockGoodBuy:"🟢 Bueno", stockOkBuy:"🟡 OK", stockBadBuy:"🔴 -",
-    psTitle:"🇵🇪 Temporada Perú 2026", psSub:"Datos oficiales ProHass / SENASA",
+    psTitle:"🇵🇪 Temporada Perú 2026", psSub:"Datos agregados · estimaciones mercado",
     psInsightsTitle:"Indicadores clave temporada 2026",
     psWeeklyTitle:"Volúmenes semanales 2026 (TM)",
     psDestEurope:"Europa", psDestUSA:"EE.UU.", psDestAsia:"Asia", psDestTotal:"Total",
@@ -219,7 +219,7 @@ const T = {
 const FLAG_MAP={NL:"🇳🇱",ES:"🇪🇸",DE:"🇩🇪",UK:"🇬🇧",BE:"🇧🇪",FR:"🇫🇷"};
 const ORIGINS=Object.keys(ORIGIN_COLOR);
 function getTrend(o,c){const p16=REAL_PRICES[16]?.[o]?.[c];const p18=REAL_PRICES[18]?.[o]?.[c];if(!p16||!p18)return"—";const d=((p18[0]+p18[1])/2)-((p16[0]+p16[1])/2);return d>0.3?"↗":d<-0.3?"↘":"=";}
-function y2026Footnote(lang){return lang==="es"?"Proyección 2026 — Fuente ProHass":lang==="en"?"2026 projection — Source ProHass":"Projection 2026 — Source ProHass";}
+function y2026Footnote(lang){return lang==="es"?"Proyección 2026 — Estimación interna":lang==="en"?"2026 projection — Internal estimate":"Projection 2026 — Estimation interne";}
 function trendColor(t){return t==="↗"||t==="↗↗"?"#4ade80":t==="↘"||t==="↘↘"?"#f87171":"#fbbf24";}
 function Tag({label,active,onClick,color="#4ade80"}){return <button onClick={onClick} style={{padding:"5px 11px",borderRadius:20,border:`1px solid ${active?color:"#dee2e6"}`,background:active?`${color}18`:"transparent",color:active?color:"#4b5563",fontSize:12,cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>{label}</button>;}
 

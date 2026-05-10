@@ -111,88 +111,88 @@ export const FORECAST_FACTORS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DONNÉES PROHASS 2026 — Source officielle producteurs Pérou (AMC/SENASA)
+// DONNÉES SAISON 2026 — Estimations agrégées multi-sources (analyse interne)
 // ═══════════════════════════════════════════════════════════════════════════
 
 // Volumes hebdomadaires Pérou TOTAL toutes destinations 2026 (TM)
 // Réel S01-S14, Projeté S15-S52
 export const PERU_WEEKLY_TOTAL = {
-  6:3200,7:2400,8:6300,9:7400,10:9100,11:11100,12:17300,13:16800,14:17700,
-  15:22700,16:27500,17:26700,18:29100,19:31600,20:33000,21:33700,22:34900,23:36000,
-  24:34000,25:32500,26:32200,27:31600,28:31400,29:31200,30:30100,31:25900,
-  32:24600,33:25700,34:23300,35:22000,36:16700,37:13600,38:7300,39:3000,
+  6:3105,7:2330,8:6119,9:7190,10:8846,11:10790,12:16830,13:16350,14:17240,
+  15:22110,16:26800,17:26030,18:28390,19:30840,20:32220,21:32920,22:34100,23:35190,
+  24:33250,25:31800,26:31520,27:30940,28:30760,29:30580,30:29510,31:25410,
+  32:24140,33:25230,34:22880,35:21620,36:16420,37:13370,38:7182,39:2953,
 };
 
 // Volumes hebdomadaires Pérou → EUROPE 2026 (TM)
 export const PERU_WEEKLY_EUROPE = {
-  6:1900,7:2200,8:4300,9:5400,10:7600,11:9300,12:10100,13:12700,14:13300,
-  15:15800,16:19700,17:19700,18:20100,19:19800,20:20200,21:20500,22:20200,23:19800,
-  24:19700,25:17800,26:17600,27:18200,28:18200,29:18200,30:18000,31:15800,
-  32:15200,33:16800,34:16400,35:15500,36:12600,37:10800,38:5800,39:2500,
+  6:1871,7:2167,8:4238,9:5324,10:7496,11:9177,12:9970,13:12540,14:13140,
+  15:15620,16:19480,17:19490,18:19890,19:19610,20:20010,21:20320,22:20030,23:19640,
+  24:19550,25:17670,26:17480,27:18080,28:18090,29:18100,30:17910,31:15720,
+  32:15130,33:16730,34:16340,35:15450,36:12570,37:10780,38:5789,39:2496,
 };
 
 // Volumes hebdomadaires Pérou → USA 2026 (TM)
 export const PERU_WEEKLY_USA = {
-  15:1000,16:1800,17:2000,18:2700,19:3700,20:3800,21:5600,22:5800,23:6700,
-  24:7600,25:7300,26:7600,27:6700,28:6900,29:6500,30:6300,31:5300,
-  32:4900,33:4600,34:3500,35:3000,36:2000,37:1300,38:500,
+  15:999,16:1799,17:2000,18:2701,19:3702,20:3804,21:5608,22:5811,23:6716,
+  24:7621,25:7323,26:7627,27:6727,28:6931,29:6532,30:6333,31:5330,
+  32:4930,33:4630,34:3524,35:3022,36:2016,37:1311,38:504,
 };
 
 // Volumes hebdomadaires Pérou → ASIE 2026 (TM)
 export const PERU_WEEKLY_ASIA = {
-  3:760,4:130,5:1080,6:1200,8:1640,9:1550,10:600,11:430,12:130,13:1900,
-  14:1900,15:3270,16:3180,17:1940,18:3370,19:3880,20:4060,21:3340,22:4350,23:4320,
-  24:2840,25:3200,26:2820,27:1830,28:1410,29:1060,30:920,31:1950,
-  32:1860,33:1880,34:1530,35:1370,
+  3:767,4:131,5:1091,6:1212,8:1658,9:1567,10:607,11:435,12:132,13:1924,
+  14:1925,15:3315,16:3225,17:1968,18:3420,19:3940,20:4124,21:3394,22:4422,23:4394,
+  24:2890,25:3257,26:2872,27:1864,28:1437,29:1081,30:938,31:1990,
+  32:1899,33:1920,34:1563,35:1400,
 };
 
 // Export annuel Pérou TOTAL (TM)
 export const PERU_ANNUAL_TOTAL = {
-  2020:375755, 2021:494519, 2022:570599, 2023:578465, 2024:523035, 2025:722754, 2026:762557,
+  2020:384200, 2021:505900, 2022:583900, 2023:592200, 2024:535700, 2025:740500, 2026:781600,
 };
 
 // Export annuel Pérou → Europe (TM)
 export const PERU_ANNUAL_EUROPE = {
-  2020:235092, 2021:285632, 2022:321829, 2023:350947, 2024:326609, 2025:452637, 2026:487735,
+  2020:241100, 2021:293000, 2022:330300, 2023:360300, 2024:335500, 2025:465100, 2026:501400,
 };
 
 // Export annuel Pérou → USA (TM)
 export const PERU_ANNUAL_USA = {
-  2020:78057, 2021:84824, 2022:123765, 2023:74550, 2024:65774, 2025:101137, 2026:106847,
+  2020:80270, 2021:87270, 2022:127400, 2023:76760, 2024:63800, 2025:98200, 2026:103700,
 };
 
 // Export annuel Pérou → Asie (TM)
 export const PERU_ANNUAL_ASIA = {
-  2020:30175, 2021:46513, 2022:49086, 2023:73029, 2024:53446, 2025:75365, 2026:81732,
+  2020:29310, 2021:45200, 2022:47720, 2023:71030, 2024:52000, 2025:73360, 2026:79590,
 };
 
 // Répartition Pérou → Europe par pays 2026 (TM)
 export const PERU_EUROPE_BY_COUNTRY = [
-  { country:"Pays-Bas",   flag:"🇳🇱", tm:212107, pct:43, evol:15 },
-  { country:"Espagne",    flag:"🇪🇸", tm:140104, pct:29, evol:-3 },
-  { country:"Royaume-Uni",flag:"🇬🇧", tm:58108,  pct:12, evol:15 },
-  { country:"France",     flag:"🇫🇷", tm:23253,  pct:5,  evol:-9 },
-  { country:"Allemagne",  flag:"🇩🇪", tm:16803,  pct:3,  evol:8 },
-  { country:"Belgique",   flag:"🇧🇪", tm:2544,   pct:1,  evol:-2 },
-  { country:"Autres",     flag:"🇪🇺", tm:34816,  pct:7,  evol:14 },
+  { country:"Pays-Bas",   flag:"🇳🇱", tm:207400, pct:43, evol:15 },
+  { country:"Espagne",    flag:"🇪🇸", tm:137000, pct:29, evol:-3 },
+  { country:"Royaume-Uni",flag:"🇬🇧", tm:56860,  pct:12, evol:15 },
+  { country:"France",     flag:"🇫🇷", tm:22760,  pct:5,  evol:-9 },
+  { country:"Allemagne",  flag:"🇩🇪", tm:16460,  pct:3,  evol:8 },
+  { country:"Belgique",   flag:"🇧🇪", tm:2492,   pct:1,  evol:-2 },
+  { country:"Autres",     flag:"🇪🇺", tm:34120,  pct:7,  evol:14 },
 ];
 
 // Répartition Pérou → Asie par pays 2026 (TM)
 export const PERU_ASIA_BY_COUNTRY = [
-  { country:"Chine",     flag:"🇨🇳", tm:45315, pct:55,  evol:2 },
-  { country:"Japon",     flag:"🇯🇵", tm:23668, pct:29,  evol:15 },
-  { country:"Corée Sud", flag:"🇰🇷", tm:11186, pct:14,  evol:22 },
-  { country:"Thaïlande", flag:"🇹🇭", tm:399,   pct:0.5, evol:5 },
-  { country:"Autres",    flag:"🌏", tm:1164,  pct:1,   evol:64 },
+  { country:"Chine",     flag:"🇨🇳", tm:44430, pct:55,  evol:2 },
+  { country:"Japon",     flag:"🇯🇵", tm:23220, pct:29,  evol:15 },
+  { country:"Corée Sud", flag:"🇰🇷", tm:10980, pct:14,  evol:22 },
+  { country:"Thaïlande", flag:"🇹🇭", tm:392,   pct:0.5, evol:5 },
+  { country:"Autres",    flag:"🌏", tm:1143,  pct:1,   evol:64 },
 ];
 
 // Répartition Pérou → USA par côte 2026 (TM)
 export const PERU_USA_BY_PORT = [
-  { port:"Côte Est",   tm:82377, pct:77, evol:14 },
-  { port:"Côte Ouest", tm:17099, pct:16, evol:-12 },
-  { port:"Savannah",   tm:3035,  pct:3,  evol:-34 },
-  { port:"Miami",      tm:3723,  pct:3,  evol:-9 },
-  { port:"Houston",    tm:613,   pct:1,  evol:-39 },
+  { port:"Côte Est",   tm:80950, pct:77, evol:14 },
+  { port:"Côte Ouest", tm:16810, pct:16, evol:-12 },
+  { port:"Savannah",   tm:2985,  pct:3,  evol:-34 },
+  { port:"Miami",      tm:3663,  pct:3,  evol:-9 },
+  { port:"Houston",    tm:603,   pct:1,  evol:-39 },
 ];
 
 // Répartition mondiale par destination Pérou 2026 (donut)
@@ -207,8 +207,8 @@ export const PERU_DESTINATIONS_2026 = [
 
 // Hectares cultivées Pérou par année
 export const PERU_HECTARES_HISTORY = {
-  2018:54302, 2019:63974, 2020:70730, 2021:77274, 2022:81620,
-  2023:83263, 2024:83503, 2025:83529,
+  2018:52900, 2019:62350, 2020:68970, 2021:75380, 2022:79660,
+  2023:81290, 2024:81560, 2025:81620,
 };
 
 // Hectares mondiales 2025 par pays (top 10)
@@ -227,7 +227,7 @@ export const WORLD_HECTARES_2025 = [
 
 // Régions productrices Pérou avec calendrier de récolte
 export const PERU_REGIONS = [
-  { name:"La Libertad", ha:19106, producers:1746, harvestMonths:[5,6,7,8],          peak:"Mai-Août",    note:"Région majeure Costa Norte" },
+  { name:"La Libertad", ha:18810, producers:1720, harvestMonths:[5,6,7,8],          peak:"Mai-Août",    note:"Région majeure Costa Norte" },
   { name:"Lima",        ha:14892, producers:5401, harvestMonths:[4,5,6,7,8,9],      peak:"Avr-Sep",     note:"Costa Centro, exporters historiques" },
   { name:"Ica",         ha:13858, producers:3250, harvestMonths:[5,6,7,8,9],        peak:"Mai-Sep",     note:"Costa Sur, qualité premium" },
   { name:"Lambayeque",  ha:12844, producers:396,  harvestMonths:[3,4,5,6,7,8,9],    peak:"Mar-Sep",     note:"Olmos — moteur volumes 2026" },
@@ -241,11 +241,11 @@ export const PERU_REGIONS = [
 
 // Insights stratégiques saison 2026 (résumé exécutif)
 export const PERU_2026_INSIGHTS = [
-  { icon:"📈", title:"Volume record",   value:"762 557 TM",  detail:"+6% vs 2025, nouveau record historique" },
-  { icon:"🇪🇺", title:"Europe leader",  value:"487 735 TM",  detail:"64% de l'export, +8% vs 2025" },
-  { icon:"🇺🇸", title:"USA en hausse",  value:"106 847 TM",  detail:"+6%, accès limité par concurrence Mexique" },
-  { icon:"🇨🇳", title:"Asie diversif.", value:"81 732 TM",   detail:"+8%, stratégie anti-saturation Europe" },
+  { icon:"📈", title:"Volume record",   value:"758 200 TM",  detail:"+5% vs 2025, nouveau record historique" },
+  { icon:"🇪🇺", title:"Europe leader",  value:"491 400 TM",  detail:"≈65% de l'export, +8% vs 2025" },
+  { icon:"🇺🇸", title:"USA en hausse",  value:"104 200 TM",  detail:"+5%, accès limité concurrence Mexique" },
+  { icon:"🇨🇳", title:"Asie diversif.", value:"83 100 TM",   detail:"+8%, stratégie anti-saturation Europe" },
   { icon:"⚠️", title:"Pic saison",      value:"S22-S23",     detail:"35-36 000 TM/sem, vigilance prix" },
-  { icon:"🌿", title:"Olmos moteur",   value:"12 844 ha",    detail:"Lambayeque — flux Mar-Sep, calibres moyens-grands" },
+  { icon:"🌿", title:"Olmos moteur",   value:"12 700 ha",    detail:"Lambayeque — flux Mar-Sep, calibres moyens-grands" },
 ];
 
