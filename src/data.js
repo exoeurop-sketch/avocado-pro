@@ -26,21 +26,24 @@ export const REAL_PRICES = {
     "Brazil":       { 14:[9.50,11.00],16:[9.50,11.00],18:[9.50,11.00],20:[8.50,9.50],22:[7.50,8.50] },
   },
 };
-export const LATEST_WEEK = 19;
-export const CIRAD_REF = { 11:11.97,12:11.86,13:12.14,14:12.22,15:12.30,16:12.45,17:11.87,18:11.21 };
-export const WEEKLY_SUPPLY_EU = { 14:21.7,15:22.5,16:24.7,17:27.7,18:26.5,19:24.9,20:23.8,21:25.5,22:25.2 };
+export const LATEST_WEEK = 20;
+export const CIRAD_REF = { 11:11.97,12:11.86,13:12.14,14:12.22,15:12.30,16:12.45,17:11.87,18:11.21,19:10.85,20:10.42 };
+// Volumes réels EU (M kg/semaine) — basés sur containers × 21.7t (40' container avocat)
+export const WEEKLY_SUPPLY_EU = { 14:9.5,15:9.3,16:13.1,17:14.1,18:14.4,19:14.3,20:17.9,21:20.0,22:18.5 };
 export const REAL_WEEKS = [14,15,16,17,18,19];
+// TOP 10 importateurs Europe — Données réelles cumulées S1-S22 (containers)
+// Volumes hebdo S19-S22 disponibles pour suivi en temps réel
 export const TOP_IMPORTERS = [
-  { name:"Nature's Pride BV",      country:"NL", w17:178.5, w18:306.5 },
-  { name:"Trops Import-Export SL", country:"ES", w17:96,    w18:183   },
-  { name:"Hillfresh Int. BV",      country:"NL", w17:153,   w18:191   },
-  { name:"Jose Luis Montosa SL",   country:"ES", w17:122,   w18:152   },
-  { name:"OGL Food Trade GmbH",    country:"DE", w17:87,    w18:147   },
-  { name:"Axarfruit SL",           country:"ES", w17:129,   w18:149   },
-  { name:"Roveg Fruit BV",         country:"NL", w17:100,   w18:118   },
-  { name:"HL Hall Int. Ltd",       country:"UK", w17:107,   w18:122   },
-  { name:"CMR Group",              country:"BE", w17:85,    w18:115   },
-  { name:"Cía Aguacatera del Sur", country:"ES", w17:74,    w18:111   },
+  { name:"Nature's Pride BV",          country:"NL", w19:64, w20:84, w21:81, w22:56, cumul:434 },
+  { name:"Trops Import-Export SL",     country:"ES", w19:47, w20:41, w21:59, w22:44, cumul:279 },
+  { name:"OGL Food Trade GmbH",        country:"DE", w19:22, w20:38, w21:40, w22:43, cumul:227 },
+  { name:"Hillfresh Int. BV",          country:"NL", w19:21, w20:21, w21:13, w22:6,  cumul:200 },
+  { name:"Frutas Montosa SL",          country:"ES", w19:16, w20:14, w21:20, w22:22, cumul:194 },
+  { name:"Westfalia Fruit UK Ltd",     country:"UK", w19:14, w20:33, w21:36, w22:11, cumul:172 },
+  { name:"Axarfruit SL",               country:"ES", w19:10, w20:9,  w21:7,  w22:6,  cumul:161 },
+  { name:"Mehadrin Tnuport Export",    country:"IL", w19:18, w20:14, w21:18, w22:12, cumul:159 },
+  { name:"Mission Produce UK",         country:"UK", w19:12, w20:13, w21:14, w22:17, cumul:145 },
+  { name:"CMR Group",                  country:"BE", w19:8,  w20:13, w21:18, w22:15, cumul:145 },
 ];
 export const CALIBRES_LIST = [14,16,18,20,22,24,26,28,30,32];
 export const CALIBRE_WEIGHTS = { 14:"285-333g",16:"250-285g",18:"222-250g",20:"200-222g",22:"182-200g",24:"167-182g",26:"154-167g",28:"143-154g",30:"133-143g",32:"125-133g" };
@@ -274,4 +277,51 @@ export const PERU_2026_INSIGHTS = [
   { icon:"⚠️", title:"Pic saison",      value:"S22-S23",     detail:"35-36 000 TM/sem, vigilance prix" },
   { icon:"🌿", title:"Olmos moteur",   value:"12 700 ha",    detail:"Lambayeque — flux Mar-Sep, calibres moyens-grands" },
 ];
+
+
+// ─── DONNÉES TRACKING CONTENEURS S20 ──────────────────────────────────────
+// Source : Manifest portuaire saison 2026, agrégation interne (mai 2026)
+
+// Top ports d'arrivée Europe (containers cumulés 2026)
+export const TOP_EU_PORTS = [
+  { port:"Rotterdam",     country:"NL", flag:"🇳🇱", containers:3983, pct:48 },
+  { port:"Algeciras",     country:"ES", flag:"🇪🇸", containers:1727, pct:21 },
+  { port:"Vlissingen",    country:"NL", flag:"🇳🇱", containers:775,  pct:9 },
+  { port:"St. Petersburg",country:"RU", flag:"🇷🇺", containers:433,  pct:5 },
+  { port:"London Gateway",country:"UK", flag:"🇬🇧", containers:376,  pct:4 },
+  { port:"Málaga",        country:"ES", flag:"🇪🇸", containers:362,  pct:4 },
+  { port:"Southampton",   country:"UK", flag:"🇬🇧", containers:197,  pct:2 },
+  { port:"Dover",         country:"UK", flag:"🇬🇧", containers:145,  pct:2 },
+  { port:"Livorno",       country:"IT", flag:"🇮🇹", containers:126,  pct:1 },
+];
+
+// Top exportateurs Pérou — saison 2026
+export const TOP_PERU_EXPORTERS = [
+  { name:"Westfalia Fruit Perú",      containers:385, share:9.0 },
+  { name:"Marand Company SAC",        containers:330, share:7.7 },
+  { name:"Fruglobe Group",            containers:294, share:6.9 },
+  { name:"Corporación Agrolatina",    containers:278, share:6.5 },
+  { name:"Eurofresh Peru SAC",        containers:271, share:6.3 },
+  { name:"Añay Peruvian Fruits",      containers:265, share:6.2 },
+  { name:"Agrícola Pampa Baja",       containers:263, share:6.1 },
+  { name:"Agrocosta Peru SAC",        containers:236, share:5.5 },
+  { name:"TAL SA",                    containers:231, share:5.4 },
+  { name:"Exportadora El Parque",     containers:223, share:5.2 },
+];
+
+// Top compagnies maritimes (volumes Europe)
+export const TOP_SHIPPING_COMPANIES = [
+  { name:"Maersk",      containers:2146, pct:27, transit:"21j (Rotterdam)" },
+  { name:"CMA-CGM",     containers:1644, pct:21, transit:"22j (Algeciras)" },
+  { name:"Hapag-Lloyd", containers:1272, pct:16, transit:"21j (Rotterdam)" },
+  { name:"MSC",         containers:1204, pct:15, transit:"23j (multi)" },
+  { name:"COSCO",       containers:136,  pct:2,  transit:"22j (Algeciras)" },
+  { name:"OOCL",        containers:121,  pct:2,  transit:"21j (Rotterdam)" },
+];
+
+// Containers par semaine S20 (vraies données) → conversion en M kg pour graphique
+// Container 40' = ~21.7 tonnes nettes (palettes 11.2 kg × ~1940 cartons)
+export const PERU_EU_CONTAINERS_BY_WEEK = {
+  14:438, 15:430, 16:603, 17:650, 18:666, 19:658, 20:825, 21:924, 22:851,
+};
 

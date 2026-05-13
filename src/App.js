@@ -1,7 +1,7 @@
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import LegalFooter from "./Legal";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -24,7 +24,10 @@ const T = {
       {title:"📅 Semaine 20 : tournant Olmos",items:["Entrée zone Olmos Pérou : calibres ↑","Amélioration temporaire 2-3 semaines","Puis retour prédominance petits calibres"],color:"#f59e0b"},
       {title:"🌍 USA → impact Europe",items:["Mexique record : 1Md+ kg exportés","Pérou & Colombia redirigés vers EU","Pression offre Europe S19-22"],color:"#60a5fa"},
     ],
-    importersTitle:"Top importateurs Pérou → Europe", importersSub:"Conteneurs cumulés · données réelles",
+    importersTitle:"Top importateurs Pérou → Europe", importersSub:"Conteneurs réels saison 2026 (S19-S22)",
+    portsTitle:"Top ports d'arrivée EU", portsSub:"Conteneurs cumulés saison 2026",
+    exportersTitle:"Top exportateurs Pérou", exportersSub:"Conteneurs cumulés saison 2026",
+    shippingTitle:"Compagnies maritimes", shippingSub:"Parts de marché Pérou → Europe",
     colPrev:"Au 17/04", colLast:"Au 01/05",
     aiTitle:"Analyse & Prédiction IA", aiSub:"Données réelles S16–S18",
     aiBtn:"🔍 Analyser & Prédire", aiLoading:"⏳ Analyse...",
@@ -97,7 +100,10 @@ const T = {
       {title:"📅 Week 20: Olmos turning point",items:["Olmos Peru entry: grades ↑","Temporary improvement 2-3 weeks","Then back to small grade dominance"],color:"#f59e0b"},
       {title:"🌍 USA → Europe impact",items:["Mexico record: 1B+ kg exported","Peru & Colombia redirected to EU","EU supply pressure W19-22"],color:"#60a5fa"},
     ],
-    importersTitle:"Top importers Peru → Europe", importersSub:"Cumulative containers · real data",
+    importersTitle:"Top importers Peru → Europe", importersSub:"Real containers season 2026 (W19-W22)",
+    portsTitle:"Top EU arrival ports", portsSub:"Cumulative containers season 2026",
+    exportersTitle:"Top Peru exporters", exportersSub:"Cumulative containers season 2026",
+    shippingTitle:"Shipping companies", shippingSub:"Market share Peru → Europe",
     colPrev:"At 17/04", colLast:"At 01/05",
     aiTitle:"AI Analysis & Prediction", aiSub:"Real data W16–W18",
     aiBtn:"🔍 Analyse & Predict", aiLoading:"⏳ Analysing...",
@@ -170,7 +176,10 @@ const T = {
       {title:"📅 Semana 20: hito Olmos",items:["Entrada zona Olmos Perú: calibres ↑","Mejora temporal 2-3 semanas","Luego vuelta a predominio fruta pequeña"],color:"#f59e0b"},
       {title:"🌍 USA → impacto Europa",items:["México récord: +1.000M kg exportados","Perú & Colombia redirigidos a EU","Presión oferta Europa S19-22"],color:"#60a5fa"},
     ],
-    importersTitle:"Top importadores Perú → Europa", importersSub:"Contenedores acumulados · datos reales",
+    importersTitle:"Top importadores Perú → Europa", importersSub:"Contenedores reales temporada 2026 (S19-S22)",
+    portsTitle:"Top puertos llegada UE", portsSub:"Contenedores acumulados temporada 2026",
+    exportersTitle:"Top exportadores Perú", exportersSub:"Contenedores acumulados temporada 2026",
+    shippingTitle:"Compañías navieras", shippingSub:"Cuotas mercado Perú → Europa",
     colPrev:"Al 17/04", colLast:"Al 01/05",
     aiTitle:"Análisis & Predicción IA", aiSub:"Datos reales S16–S18",
     aiBtn:"🔍 Analizar & Predecir", aiLoading:"⏳ Analizando...",
@@ -492,24 +501,126 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
           </div>
         </div>)}
 
-        {tab===2&&(<div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",overflow:"hidden"}}>
-          <div style={{padding:"10px 14px",borderBottom:"1px solid #dee2e6",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6}}>
-            <span style={{fontSize:12,fontWeight:700,color:"#16a34a"}}>🏢 {t.importersTitle}</span>
-            <span style={{fontSize:10,color:"#6b7280"}}>{t.importersSub}</span>
+        {tab===2&&(<div>
+          {/* TOP IMPORTATEURS — Vraies données S19-S22 */}
+          <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",overflow:"hidden",marginBottom:14}}>
+            <div style={{padding:"10px 14px",borderBottom:"1px solid #dee2e6",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6}}>
+              <span style={{fontSize:12,fontWeight:700,color:"#16a34a"}}>🏢 {t.importersTitle}</span>
+              <span style={{fontSize:10,color:"#6b7280"}}>{t.importersSub}</span>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"28px 1fr 36px 50px 50px 50px 50px 60px",padding:"7px 14px",background:"#ffffff",borderBottom:"1px solid #dee2e6",fontSize:10,color:"#374151",textTransform:"uppercase",letterSpacing:"0.05em"}}>
+              <div>#</div>
+              <div>{t.col.importer}</div>
+              <div>🌍</div>
+              <div style={{textAlign:"right"}}>S19</div>
+              <div style={{textAlign:"right"}}>S20</div>
+              <div style={{textAlign:"right"}}>S21</div>
+              <div style={{textAlign:"right"}}>S22</div>
+              <div style={{textAlign:"right"}}>{t.col.growth}</div>
+            </div>
+            {TOP_IMPORTERS.map((imp,i)=>{
+              const recent=(imp.w20||0)+(imp.w21||0)+(imp.w22||0);
+              const prev=(imp.w19||0)*3;
+              const growth=prev>0?((recent-prev)/prev*100):0;
+              const barW=(imp.cumul/TOP_IMPORTERS[0].cumul)*100;
+              return(
+                <div key={imp.name} style={{display:"grid",gridTemplateColumns:"28px 1fr 36px 50px 50px 50px 50px 60px",padding:"10px 14px",position:"relative",background:i%2===0?"#f8f9fa":"#f1f3f5",borderBottom:i<TOP_IMPORTERS.length-1?"1px solid #dee2e6":"none"}}>
+                  <div style={{position:"absolute",left:0,top:0,height:"100%",width:`${barW*0.4}%`,background:"#4ade8008",pointerEvents:"none"}}/>
+                  <div style={{fontSize:11,color:"#374151",fontFamily:"'Space Mono',monospace",display:"flex",alignItems:"center"}}>#{i+1}</div>
+                  <div style={{fontSize:11,color:"#065f46",display:"flex",alignItems:"center",fontWeight:i<3?700:400}}>{imp.name}</div>
+                  <div style={{fontSize:14,display:"flex",alignItems:"center"}}>{FLAG_MAP[imp.country]||"🌍"}</div>
+                  <div style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"flex-end"}}>{imp.w19||"-"}</div>
+                  <div style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:"#4b5563",display:"flex",alignItems:"center",justifyContent:"flex-end"}}>{imp.w20||"-"}</div>
+                  <div style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:"#4b5563",display:"flex",alignItems:"center",justifyContent:"flex-end"}}>{imp.w21||"-"}</div>
+                  <div style={{fontFamily:"'Space Mono',monospace",fontSize:12,color:"#16a34a",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"flex-end"}}>{imp.w22||"-"}</div>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end"}}><span style={{fontSize:11,fontFamily:"'Space Mono',monospace",fontWeight:700,color:growth>20?"#16a34a":growth>0?"#fbbf24":"#dc2626"}}>{growth>0?"+":""}{growth.toFixed(0)}%</span></div>
+                </div>);
+            })}
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"28px 1fr 36px 80px 80px 72px",padding:"7px 14px",background:"#ffffff",borderBottom:"1px solid #dee2e6"}}>
-            {["#",t.col.importer,"🌍",t.colPrev,t.colLast,t.col.growth].map(h=><div key={h} style={{fontSize:10,color:"#374151",textTransform:"uppercase",letterSpacing:"0.05em"}}>{h}</div>)}
+
+          {/* 3 CARTES : PORTS + EXPORTATEURS + COMPAGNIES */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:12}}>
+            
+            {/* TOP PORTS D'ARRIVÉE */}
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",overflow:"hidden"}}>
+              <div style={{padding:"10px 14px",borderBottom:"1px solid #dee2e6",background:"#ffffff"}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#1e40af"}}>🚢 {t.portsTitle}</div>
+                <div style={{fontSize:10,color:"#6b7280",marginTop:2}}>{t.portsSub}</div>
+              </div>
+              {TOP_EU_PORTS.map((p,i)=>{
+                const barW=(p.containers/TOP_EU_PORTS[0].containers)*100;
+                return(
+                  <div key={p.port} style={{padding:"8px 14px",display:"flex",alignItems:"center",gap:8,borderBottom:i<TOP_EU_PORTS.length-1?"1px solid #f3f4f6":"none"}}>
+                    <span style={{fontSize:14}}>{p.flag}</span>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:11,fontWeight:700,color:"#374151",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.port}</div>
+                      <div style={{height:5,background:"#e5e7eb",borderRadius:3,marginTop:3,overflow:"hidden"}}>
+                        <div style={{width:`${barW}%`,height:"100%",background:"#1e40af"}}></div>
+                      </div>
+                    </div>
+                    <div style={{textAlign:"right",fontFamily:"'Space Mono',monospace",fontSize:10}}>
+                      <div style={{fontWeight:700,color:"#1e40af"}}>{p.containers}</div>
+                      <div style={{color:"#9ca3af"}}>{p.pct}%</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* TOP EXPORTATEURS PÉROU */}
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",overflow:"hidden"}}>
+              <div style={{padding:"10px 14px",borderBottom:"1px solid #dee2e6",background:"#ffffff"}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#15803d"}}>🇵🇪 {t.exportersTitle}</div>
+                <div style={{fontSize:10,color:"#6b7280",marginTop:2}}>{t.exportersSub}</div>
+              </div>
+              {TOP_PERU_EXPORTERS.map((e,i)=>{
+                const barW=(e.containers/TOP_PERU_EXPORTERS[0].containers)*100;
+                return(
+                  <div key={e.name} style={{padding:"8px 14px",display:"flex",alignItems:"center",gap:8,borderBottom:i<TOP_PERU_EXPORTERS.length-1?"1px solid #f3f4f6":"none"}}>
+                    <span style={{fontSize:10,color:"#9ca3af",fontFamily:"'Space Mono',monospace",fontWeight:700,minWidth:18}}>#{i+1}</span>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:11,fontWeight:600,color:"#374151",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{e.name}</div>
+                      <div style={{height:5,background:"#e5e7eb",borderRadius:3,marginTop:3,overflow:"hidden"}}>
+                        <div style={{width:`${barW}%`,height:"100%",background:"#16a34a"}}></div>
+                      </div>
+                    </div>
+                    <div style={{textAlign:"right",fontFamily:"'Space Mono',monospace",fontSize:10}}>
+                      <div style={{fontWeight:700,color:"#15803d"}}>{e.containers}</div>
+                      <div style={{color:"#9ca3af"}}>{e.share}%</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* TOP COMPAGNIES MARITIMES */}
+            <div style={{background:"#f8f9fa",borderRadius:14,border:"1px solid #dee2e6",overflow:"hidden"}}>
+              <div style={{padding:"10px 14px",borderBottom:"1px solid #dee2e6",background:"#ffffff"}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#92400e"}}>⚓ {t.shippingTitle}</div>
+                <div style={{fontSize:10,color:"#6b7280",marginTop:2}}>{t.shippingSub}</div>
+              </div>
+              {TOP_SHIPPING_COMPANIES.map((s,i)=>{
+                const barW=(s.containers/TOP_SHIPPING_COMPANIES[0].containers)*100;
+                return(
+                  <div key={s.name} style={{padding:"8px 14px",borderBottom:i<TOP_SHIPPING_COMPANIES.length-1?"1px solid #f3f4f6":"none"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:11,fontWeight:700,color:"#374151"}}>{s.name}</div>
+                      </div>
+                      <div style={{textAlign:"right",fontFamily:"'Space Mono',monospace",fontSize:10}}>
+                        <div style={{fontWeight:700,color:"#92400e"}}>{s.containers}</div>
+                        <div style={{color:"#9ca3af"}}>{s.pct}%</div>
+                      </div>
+                    </div>
+                    <div style={{height:5,background:"#e5e7eb",borderRadius:3,marginTop:4,overflow:"hidden"}}>
+                      <div style={{width:`${barW}%`,height:"100%",background:"#f59e0b"}}></div>
+                    </div>
+                    <div style={{fontSize:9,color:"#9ca3af",marginTop:3,fontStyle:"italic"}}>⏱️ {s.transit}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          {TOP_IMPORTERS.map((imp,i)=>{const growth=((imp.w18-imp.w17)/imp.w17*100);const barW=(imp.w18/TOP_IMPORTERS[0].w18)*100;return(
-            <div key={imp.name} style={{display:"grid",gridTemplateColumns:"28px 1fr 36px 80px 80px 72px",padding:"10px 14px",position:"relative",background:i%2===0?"#f8f9fa":"#f1f3f5",borderBottom:i<TOP_IMPORTERS.length-1?"1px solid #dee2e6":"none"}}>
-              <div style={{position:"absolute",left:0,top:0,height:"100%",width:`${barW*0.4}%`,background:"#4ade8008",pointerEvents:"none"}}/>
-              <div style={{fontSize:11,color:"#374151",fontFamily:"'Space Mono',monospace",display:"flex",alignItems:"center"}}>#{i+1}</div>
-              <div style={{fontSize:12,color:"#065f46",display:"flex",alignItems:"center",fontWeight:i<3?700:400}}>{imp.name}</div>
-              <div style={{fontSize:14,display:"flex",alignItems:"center"}}>{FLAG_MAP[imp.country]||"🌍"}</div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:12,color:"#4b5563",display:"flex",alignItems:"center"}}>{imp.w17}</div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:13,color:"#16a34a",fontWeight:700,display:"flex",alignItems:"center"}}>{imp.w18}</div>
-              <div style={{display:"flex",alignItems:"center"}}><span style={{fontSize:11,fontFamily:"'Space Mono',monospace",fontWeight:700,color:growth>50?"#4ade80":growth>20?"#fbbf24":"#f87171"}}>+{growth.toFixed(0)}%</span></div>
-            </div>);})}
         </div>)}
 
         {tab===3&&(<div>
