@@ -1,0 +1,47 @@
+# Cloudflare Pages — Headers configuration
+# Empêche le cache des fichiers HTML pour toujours servir la dernière version
+# Les assets (JS, CSS, images) restent cachés pour la performance
+
+# ─── HTML & racine — JAMAIS de cache ─────────────────────────────────────
+/
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/index.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+/*.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
+  Expires: 0
+
+# ─── Service Worker — JAMAIS de cache ────────────────────────────────────
+/service-worker.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+# ─── Manifest & icons — Cache court ─────────────────────────────────────
+/manifest.json
+  Cache-Control: public, max-age=3600
+
+# ─── Assets statiques (JS, CSS) — Cache long (les noms sont versionnés) ─
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ─── Images — Cache moyen ────────────────────────────────────────────────
+/*.png
+  Cache-Control: public, max-age=86400
+/*.jpg
+  Cache-Control: public, max-age=86400
+/*.svg
+  Cache-Control: public, max-age=86400
+/*.ico
+  Cache-Control: public, max-age=86400
+
+# ─── Sécurité (en bonus) ─────────────────────────────────────────────────
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
