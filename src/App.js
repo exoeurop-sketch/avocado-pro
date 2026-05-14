@@ -10,7 +10,7 @@ const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
 // ─── TRADUCTIONS ──────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🇵🇪 Saison Pérou","🔮 Analyse IA","📋 Mon Stock"],
+    tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🇵🇪 Saison Pérou","🔮 Analyse IA","📋 Mon Stock","🧮 Calculateur"],
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
@@ -85,9 +85,30 @@ const T = {
     psTransitNote:"⏱️ Transit maritime moyen : 3 semaines (Callao → Rotterdam/Algeciras/Hamburg)",
     psViewArrivalDesc:"Volumes RÉELS qui arrivent en Europe = ce qui pèse sur les prix EU",
     psViewDepartureDesc:"Volumes au départ du Pérou = à venir en Europe dans 3 semaines",
+    calcTitle:"🧮 Simulateur de rentabilité conteneur",
+    calcSub:"Calculez votre prix de revient et marge avant d'acheter",
+    calcConfig:"1️⃣ Configuration",
+    calcFees:"2️⃣ Frais logistiques (modifiables)",
+    calcSale:"3️⃣ Vente",
+    calcResults:"📊 Résultats",
+    calcPreset:"Préréglage régional",
+    calcPresetES:"🇪🇸 Espagne", calcPresetFR:"🇫🇷 France", calcPresetNL:"🇳🇱 Pays-Bas", calcPresetCustom:"⚙️ Custom",
+    calcOrigin:"Origine", calcCal:"Calibre", calcBoxes:"Nb caisses", calcCif:"Prix CIF (€/caisse)",
+    calcPort:"Frais portuaires (€/caisse)", calcStorage:"Stockage frigo (€/caisse)",
+    calcRipen:"Mûrissage (€/caisse)", calcTransport:"Transport entrepôt (€/caisse)",
+    calcLoss:"Pertes/écarts (%)",
+    calcSalePrice:"Prix vente cible (€/caisse)",
+    calcCostTotal:"Coût achat total", calcFeesTotal:"Frais logistiques",
+    calcLossTotal:"Pertes", calcBreakeven:"Prix de revient",
+    calcBreakevenUnit:"Prix revient /caisse", calcRevenue:"Chiffre d'affaires",
+    calcMargin:"MARGE BRUTE", calcMarketComp:"Comparaison prix marché S",
+    calcVerdictGood:"🟢 ACHAT RENTABLE", calcVerdictOk:"🟡 RENTABLE MAIS JUSTE",
+    calcVerdictBad:"🔴 MARGE FAIBLE", calcVerdictLoss:"⛔ PERTE PROBABLE",
+    calcMarketLow:"sous le marché ✅", calcMarketAligned:"aligné marché", calcMarketHigh:"au-dessus marché ⚠️",
+    calcResetSim:"🔄 Réinitialiser",
   },
   en: {
-    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🇵🇪 Peru Season","🔮 AI Analysis","📋 My Stock"],
+    tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🇵🇪 Peru Season","🔮 AI Analysis","📋 My Stock","🧮 Calculator"],
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
     col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
@@ -162,9 +183,30 @@ const T = {
     psTransitNote:"⏱️ Average maritime transit: 3 weeks (Callao → Rotterdam/Algeciras/Hamburg)",
     psViewArrivalDesc:"Volumes ACTUALLY arriving in Europe = what really moves EU prices",
     psViewDepartureDesc:"Volumes leaving Peru = will arrive in Europe in 3 weeks",
+    calcTitle:"🧮 Container profitability simulator",
+    calcSub:"Calculate your cost price and margin before buying",
+    calcConfig:"1️⃣ Configuration",
+    calcFees:"2️⃣ Logistics costs (editable)",
+    calcSale:"3️⃣ Sale",
+    calcResults:"📊 Results",
+    calcPreset:"Regional preset",
+    calcPresetES:"🇪🇸 Spain", calcPresetFR:"🇫🇷 France", calcPresetNL:"🇳🇱 Netherlands", calcPresetCustom:"⚙️ Custom",
+    calcOrigin:"Origin", calcCal:"Grade", calcBoxes:"# boxes", calcCif:"CIF Price (€/box)",
+    calcPort:"Port fees (€/box)", calcStorage:"Cold storage (€/box)",
+    calcRipen:"Ripening (€/box)", calcTransport:"Transport (€/box)",
+    calcLoss:"Losses/shrinkage (%)",
+    calcSalePrice:"Target sale price (€/box)",
+    calcCostTotal:"Total purchase cost", calcFeesTotal:"Logistics costs",
+    calcLossTotal:"Losses", calcBreakeven:"Break-even price",
+    calcBreakevenUnit:"Break-even /box", calcRevenue:"Revenue",
+    calcMargin:"GROSS MARGIN", calcMarketComp:"Market price comparison W",
+    calcVerdictGood:"🟢 PROFITABLE BUY", calcVerdictOk:"🟡 PROFITABLE BUT TIGHT",
+    calcVerdictBad:"🔴 LOW MARGIN", calcVerdictLoss:"⛔ LIKELY LOSS",
+    calcMarketLow:"below market ✅", calcMarketAligned:"market aligned", calcMarketHigh:"above market ⚠️",
+    calcResetSim:"🔄 Reset",
   },
   es: {
-    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🇵🇪 Temporada Perú","🔮 Análisis IA","📋 Mi Stock"],
+    tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🇵🇪 Temporada Perú","🔮 Análisis IA","📋 Mi Stock","🧮 Calculadora"],
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
@@ -239,6 +281,27 @@ const T = {
     psTransitNote:"⏱️ Tránsito marítimo promedio: 3 semanas (Callao → Rotterdam/Algeciras/Hamburg)",
     psViewArrivalDesc:"Volúmenes que REALMENTE llegan a Europa = lo que afecta precios EU",
     psViewDepartureDesc:"Volúmenes saliendo de Perú = llegarán a Europa en 3 semanas",
+    calcTitle:"🧮 Simulador de rentabilidad contenedor",
+    calcSub:"Calcula tu precio de coste y margen antes de comprar",
+    calcConfig:"1️⃣ Configuración",
+    calcFees:"2️⃣ Costes logísticos (editables)",
+    calcSale:"3️⃣ Venta",
+    calcResults:"📊 Resultados",
+    calcPreset:"Preajuste regional",
+    calcPresetES:"🇪🇸 España", calcPresetFR:"🇫🇷 Francia", calcPresetNL:"🇳🇱 Países Bajos", calcPresetCustom:"⚙️ Custom",
+    calcOrigin:"Origen", calcCal:"Calibre", calcBoxes:"N° cajas", calcCif:"Precio CIF (€/caja)",
+    calcPort:"Tasas portuarias (€/caja)", calcStorage:"Almacén frigorífico (€/caja)",
+    calcRipen:"Maduración (€/caja)", calcTransport:"Transporte (€/caja)",
+    calcLoss:"Pérdidas/mermas (%)",
+    calcSalePrice:"Precio venta objetivo (€/caja)",
+    calcCostTotal:"Coste compra total", calcFeesTotal:"Costes logísticos",
+    calcLossTotal:"Pérdidas", calcBreakeven:"Precio de coste",
+    calcBreakevenUnit:"Coste /caja", calcRevenue:"Facturación",
+    calcMargin:"MARGEN BRUTO", calcMarketComp:"Comparativa precio mercado S",
+    calcVerdictGood:"🟢 COMPRA RENTABLE", calcVerdictOk:"🟡 RENTABLE PERO JUSTO",
+    calcVerdictBad:"🔴 MARGEN BAJO", calcVerdictLoss:"⛔ PÉRDIDA PROBABLE",
+    calcMarketLow:"bajo mercado ✅", calcMarketAligned:"alineado mercado", calcMarketHigh:"sobre mercado ⚠️",
+    calcResetSim:"🔄 Reiniciar",
   },
 };
 
@@ -370,6 +433,68 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   const[psView,setPsView]=useState("arrival"); // "arrival" = défaut (le plus utile pour les acheteurs EU)
   // ─── IMPORTATEURS : toggle Cumul vs Semaine ─────────────────────────────
   const[impView,setImpView]=useState("week22"); // "cumul" | "week19" | "week20" | "week21" | "week22"
+  // ─── CALCULATEUR DE RENTABILITÉ ─────────────────────────────────────────
+  const CALC_PRESETS={
+    "ES":{port:0.25,storage:0.10,ripen:0.35,transport:0.15,loss:3},
+    "FR":{port:0.30,storage:0.15,ripen:0.40,transport:0.20,loss:3},
+    "NL":{port:0.35,storage:0.20,ripen:0.45,transport:0.25,loss:3},
+  };
+  const[calcPreset,setCalcPreset]=useState("FR"); // "ES" | "FR" | "NL" | "CUSTOM"
+  const[calc,setCalc]=useState(()=>{
+    try{
+      const saved=JSON.parse(localStorage.getItem("hm_calc")||"null");
+      if(saved)return saved;
+    }catch{}
+    return {
+      origin:"Peru", cal:18, boxes:5280, cif:11.50, salePrice:15.50,
+      port:0.30, storage:0.15, ripen:0.40, transport:0.20, loss:3,
+    };
+  });
+  useEffect(()=>{localStorage.setItem("hm_calc",JSON.stringify(calc));},[calc]);
+  const applyCalcPreset=(p)=>{
+    setCalcPreset(p);
+    if(p!=="CUSTOM"&&CALC_PRESETS[p]){
+      setCalc({...calc,...CALC_PRESETS[p]});
+    }
+  };
+  const updateCalc=(field,val)=>{
+    setCalc({...calc,[field]:val});
+    setCalcPreset("CUSTOM"); // dès qu'on modifie, on passe en custom
+  };
+  // Calculs dérivés (en temps réel)
+  const calcCostTotal=calc.boxes*calc.cif;
+  const calcFeesPerBox=calc.port+calc.storage+calc.ripen+calc.transport;
+  const calcFeesTotal=calc.boxes*calcFeesPerBox;
+  const calcLossBoxes=calc.boxes*(calc.loss/100);
+  const calcLossValue=calcLossBoxes*(calc.cif+calcFeesPerBox);
+  const calcBreakeven=calcCostTotal+calcFeesTotal+calcLossValue;
+  const calcSellableBoxes=calc.boxes-calcLossBoxes;
+  const calcBreakevenUnit=calcSellableBoxes>0?calcBreakeven/calcSellableBoxes:0;
+  const calcRevenue=calcSellableBoxes*calc.salePrice;
+  const calcMargin=calcRevenue-calcBreakeven;
+  const calcMarginPct=calcBreakeven>0?(calcMargin/calcBreakeven)*100:0;
+  // Comparaison marché
+  const calcMarketPrice=(()=>{
+    const w=LATEST_WEEK;
+    const p=REAL_PRICES[w]?.[calc.origin]?.[calc.cal];
+    if(!p)return null;
+    return (p[0]+p[1])/2;
+  })();
+  const calcMarketDiff=calcMarketPrice?((calc.cif-calcMarketPrice)/calcMarketPrice*100):null;
+  // Verdict
+  const calcVerdict=(()=>{
+    if(calcMarginPct<0)return {label:t.calcVerdictLoss,color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
+    if(calcMarginPct<5)return {label:t.calcVerdictBad,color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
+    if(calcMarginPct<15)return {label:t.calcVerdictOk,color:"#ca8a04",bg:"#fef3c7",border:"#fbbf24"};
+    return {label:t.calcVerdictGood,color:"#15803d",bg:"#dcfce7",border:"#4ade80"};
+  })();
+  const resetCalc=()=>{
+    setCalc({
+      origin:"Peru", cal:18, boxes:5280, cif:11.50, salePrice:15.50,
+      port:0.30, storage:0.15, ripen:0.40, transport:0.20, loss:3,
+    });
+    setCalcPreset("FR");
+  };
   const t=T[lang];
   const allWeeks=Object.keys(REAL_PRICES).map(Number).sort();
   const cfg={color:ORIGIN_COLOR[origin],flag:ORIGIN_FLAG[origin]};
@@ -1124,6 +1249,154 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
               </table>
             </div>
           )}
+        </div>)}
+
+        {tab===7&&(<div>
+          {/* HEADER */}
+          <div style={{marginBottom:14}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#374151"}}>{t.calcTitle}</div>
+            <div style={{fontSize:11,color:"#6b7280",marginTop:2}}>{t.calcSub}</div>
+          </div>
+
+          {/* PRESETS RÉGIONAUX */}
+          <div style={{background:"#f8f9fa",borderRadius:12,border:"1px solid #dee2e6",padding:14,marginBottom:14}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",textTransform:"uppercase",marginBottom:8}}>{t.calcPreset}</div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+              {[
+                {key:"ES",label:t.calcPresetES},
+                {key:"FR",label:t.calcPresetFR},
+                {key:"NL",label:t.calcPresetNL},
+                {key:"CUSTOM",label:t.calcPresetCustom},
+              ].map(p=>(
+                <button key={p.key} onClick={()=>applyCalcPreset(p.key)} style={{padding:"7px 14px",borderRadius:8,background:calcPreset===p.key?"#16a34a":"#ffffff",color:calcPreset===p.key?"white":"#6b7280",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit",border:`1px solid ${calcPreset===p.key?"#16a34a":"#dee2e6"}`}}>{p.label}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* CONFIGURATION + RÉSULTATS GRID */}
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(320px,1fr))",gap:14,marginBottom:14}}>
+
+            {/* COLONNE GAUCHE — INPUTS */}
+            <div>
+              {/* SECTION CONFIG */}
+              <div style={{background:"#ffffff",borderRadius:12,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>{t.calcConfig}</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                  <div>
+                    <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.calcOrigin}</div>
+                    <select value={calc.origin} onChange={e=>updateCalc("origin",e.target.value)} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box",background:"white"}}>
+                      {ORIGINS.map(o=><option key={o} value={o}>{ORIGIN_FLAG[o]} {t.origins[o]}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.calcCal}</div>
+                    <select value={calc.cal} onChange={e=>updateCalc("cal",Number(e.target.value))} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box",background:"white"}}>
+                      {CALIBRES_LIST.map(c=><option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.calcBoxes}</div>
+                    <input type="number" min="1" value={calc.boxes} onChange={e=>updateCalc("boxes",Number(e.target.value))} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+                  </div>
+                  <div>
+                    <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.calcCif}</div>
+                    <input type="number" step="0.10" min="0" value={calc.cif} onChange={e=>updateCalc("cif",Number(e.target.value))} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box",background:"#fef3c7"}}/>
+                  </div>
+                </div>
+                {calcMarketPrice&&(
+                  <div style={{marginTop:8,padding:8,background:"#dbeafe",borderRadius:6,fontSize:10,color:"#1e40af"}}>
+                    💡 {t.calcMarketCif||"CIF marché S"}{LATEST_WEEK}: <b>{calcMarketPrice.toFixed(2)}€</b>
+                    {calcMarketDiff!==null&&(
+                      <span style={{marginLeft:6,fontWeight:700,color:calcMarketDiff<-2?"#16a34a":calcMarketDiff>2?"#dc2626":"#92400e"}}>
+                        ({calcMarketDiff>0?"+":""}{calcMarketDiff.toFixed(1)}% {calcMarketDiff<-2?t.calcMarketLow:calcMarketDiff>2?t.calcMarketHigh:t.calcMarketAligned})
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* SECTION FRAIS */}
+              <div style={{background:"#ffffff",borderRadius:12,border:"1px solid #dee2e6",padding:14,marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>{t.calcFees}</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                  {[
+                    {field:"port",label:t.calcPort,step:0.05},
+                    {field:"storage",label:t.calcStorage,step:0.05},
+                    {field:"ripen",label:t.calcRipen,step:0.05},
+                    {field:"transport",label:t.calcTransport,step:0.05},
+                    {field:"loss",label:t.calcLoss,step:0.5},
+                  ].map(f=>(
+                    <div key={f.field}>
+                      <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{f.label}</div>
+                      <input type="number" step={f.step} min="0" value={calc[f.field]} onChange={e=>updateCalc(f.field,Number(e.target.value))} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #dee2e6",fontSize:12,fontFamily:"inherit",boxSizing:"border-box"}}/>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* SECTION VENTE */}
+              <div style={{background:"#ffffff",borderRadius:12,border:"1px solid #dee2e6",padding:14}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>{t.calcSale}</div>
+                <div>
+                  <div style={{fontSize:10,color:"#6b7280",marginBottom:4,fontWeight:600}}>{t.calcSalePrice}</div>
+                  <input type="number" step="0.10" min="0" value={calc.salePrice} onChange={e=>updateCalc("salePrice",Number(e.target.value))} style={{width:"100%",padding:"7px 9px",borderRadius:6,border:"1px solid #16a34a",fontSize:13,fontFamily:"inherit",boxSizing:"border-box",background:"#f0fdf4",fontWeight:700,color:"#15803d"}}/>
+                </div>
+                <button onClick={resetCalc} style={{marginTop:10,width:"100%",padding:"7px 12px",borderRadius:6,border:"1px solid #dee2e6",background:"#f8f9fa",color:"#6b7280",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{t.calcResetSim}</button>
+              </div>
+            </div>
+
+            {/* COLONNE DROITE — RÉSULTATS */}
+            <div>
+              <div style={{background:"linear-gradient(145deg,#f8f9fa,#ffffff)",borderRadius:14,border:"1px solid #dee2e6",padding:18,marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:14,textTransform:"uppercase"}}>{t.calcResults}</div>
+                
+                {/* Détail coûts */}
+                <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12}}>
+                    <span style={{color:"#6b7280"}}>{t.calcCostTotal}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:600,color:"#374151"}}>{calcCostTotal.toFixed(0)} €</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12}}>
+                    <span style={{color:"#6b7280"}}>+ {t.calcFeesTotal}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:600,color:"#374151"}}>{calcFeesTotal.toFixed(0)} €</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12}}>
+                    <span style={{color:"#6b7280"}}>+ {t.calcLossTotal} ({calc.loss}%)</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:600,color:"#dc2626"}}>{calcLossValue.toFixed(0)} €</span>
+                  </div>
+                  <div style={{borderTop:"1px solid #dee2e6",paddingTop:8,display:"flex",justifyContent:"space-between",fontSize:13}}>
+                    <span style={{color:"#374151",fontWeight:700}}>{t.calcBreakeven}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#92400e"}}>{calcBreakeven.toFixed(0)} €</span>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:11}}>
+                    <span style={{color:"#9ca3af"}}>{t.calcBreakevenUnit}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:600,color:"#92400e"}}>{calcBreakevenUnit.toFixed(2)} €</span>
+                  </div>
+                </div>
+
+                {/* Chiffre d'affaires */}
+                <div style={{background:"#f0fdf4",borderRadius:8,padding:12,marginBottom:12}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12}}>
+                    <span style={{color:"#15803d",fontWeight:600}}>{t.calcRevenue}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d"}}>{calcRevenue.toFixed(0)} €</span>
+                  </div>
+                  <div style={{fontSize:10,color:"#16a34a",marginTop:3}}>{calcSellableBoxes.toFixed(0)} {t.calcBoxes.toLowerCase()} × {calc.salePrice.toFixed(2)}€</div>
+                </div>
+
+                {/* MARGE BRUTE */}
+                <div style={{background:calcVerdict.bg,borderRadius:10,border:`2px solid ${calcVerdict.border}`,padding:14,textAlign:"center"}}>
+                  <div style={{fontSize:10,color:calcVerdict.color,fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{t.calcMargin}</div>
+                  <div style={{fontSize:26,fontWeight:800,color:calcVerdict.color,fontFamily:"'Space Mono',monospace",lineHeight:1}}>
+                    {calcMargin>=0?"+":""}{calcMargin.toFixed(0)} €
+                  </div>
+                  <div style={{fontSize:13,fontWeight:700,color:calcVerdict.color,marginTop:4}}>
+                    {calcMargin>=0?"+":""}{calcMarginPct.toFixed(1)}%
+                  </div>
+                  <div style={{fontSize:11,color:calcVerdict.color,fontWeight:700,marginTop:8}}>{calcVerdict.label}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>)}
 
         <LegalFooter lang={lang} />
