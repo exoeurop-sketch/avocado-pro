@@ -1,6 +1,7 @@
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import LegalFooter from "./Legal";
+import VersionChecker from "./VersionChecker";
 import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
@@ -1126,6 +1127,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
         </div>)}
 
         <LegalFooter lang={lang} />
+        <VersionChecker lang={lang} />
       </div>
     </div>
   );
