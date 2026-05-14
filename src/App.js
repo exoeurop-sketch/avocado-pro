@@ -481,12 +481,12 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
     return (p[0]+p[1])/2;
   })();
   const calcMarketDiff=calcMarketPrice?((calc.cif-calcMarketPrice)/calcMarketPrice*100):null;
-  // Verdict
+  // Verdict — utilise une clé statique, le label sera traduit dans le JSX
   const calcVerdict=(()=>{
-    if(calcMarginPct<0)return {label:t.calcVerdictLoss,color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
-    if(calcMarginPct<5)return {label:t.calcVerdictBad,color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
-    if(calcMarginPct<15)return {label:t.calcVerdictOk,color:"#ca8a04",bg:"#fef3c7",border:"#fbbf24"};
-    return {label:t.calcVerdictGood,color:"#15803d",bg:"#dcfce7",border:"#4ade80"};
+    if(calcMarginPct<0)return {key:"loss",color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
+    if(calcMarginPct<5)return {key:"bad",color:"#dc2626",bg:"#fee2e2",border:"#f87171"};
+    if(calcMarginPct<15)return {key:"ok",color:"#ca8a04",bg:"#fef3c7",border:"#fbbf24"};
+    return {key:"good",color:"#15803d",bg:"#dcfce7",border:"#4ade80"};
   })();
   const resetCalc=()=>{
     setCalc({
@@ -1392,7 +1392,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
                   <div style={{fontSize:13,fontWeight:700,color:calcVerdict.color,marginTop:4}}>
                     {calcMargin>=0?"+":""}{calcMarginPct.toFixed(1)}%
                   </div>
-                  <div style={{fontSize:11,color:calcVerdict.color,fontWeight:700,marginTop:8}}>{calcVerdict.label}</div>
+                  <div style={{fontSize:11,color:calcVerdict.color,fontWeight:700,marginTop:8}}>{calcVerdict.key==="loss"?t.calcVerdictLoss:calcVerdict.key==="bad"?t.calcVerdictBad:calcVerdict.key==="ok"?t.calcVerdictOk:t.calcVerdictGood}</div>
                 </div>
               </div>
             </div>
