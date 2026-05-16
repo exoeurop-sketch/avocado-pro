@@ -361,9 +361,9 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   const[origin,setOrigin]=useState("Peru");
   const[cal,setCal]=useState(18);
   const[week,setWeek]=useState(LATEST_WEEK);
-  const[rates,setRates]=useState({});
-  const[ratesDate,setRatesDate]=useState(null);
-  const[ratesStatus,setRatesStatus]=useState("loading");
+  const[rates,setRates]=useState({USD:1.085, PEN:4.05, COP:4250, ZAR:19.8, BRL:5.55}); // Taux par défaut (mai 2026)
+  const[ratesDate,setRatesDate]=useState("fallback");
+  const[ratesStatus,setRatesStatus]=useState("fallback"); // "loading" | "ok" | "error" | "fallback"
   const[usdAmount,setUsdAmount]=useState(100); // montant USD pour conversion rapide
   const[aiText,setAiText]=useState("");
   const[aiLoading,setAiLoading]=useState(false);
@@ -507,8 +507,24 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
 
   const fetchRates=useCallback(async()=>{
     setRatesStatus("loading");
-    try{const r=await fetch("https://api.frankfurter.dev/v2/rates?base=EUR&quotes=USD,PEN,COP,ZAR,BRL");const d=await r.json();setRates(d.rates||{});setRatesDate(d.date);setRatesStatus("ok");}
-    catch{setRatesStatus("error");}
+    try{
+      // Timeout de 5 sec pour ne pas bloquer si l'API ne répond pas
+      const controller=new AbortController();
+      const timeoutId=setTimeout(()=>controller.abort(),5000);
+      const r=await fetch("https://api.frankfurter.dev/v2/rates?base=EUR&quotes=USD,PEN,COP,ZAR,BRL",{signal:controller.signal});
+      clearTimeout(timeoutId);
+      if(!r.ok)throw new Error("API error");
+      const d=await r.json();
+      if(d.rates&&d.rates.USD){
+        setRates(d.rates);
+        setRatesDate(d.date);
+        setRatesStatus("ok");
+      }else{
+        setRatesStatus("fallback"); // garde les valeurs par défaut
+      }
+    }catch{
+      setRatesStatus("fallback"); // API bloquée ou hors-ligne, on garde les valeurs par défaut
+    }
   },[]);
   useEffect(()=>{fetchRates();},[fetchRates]);
 
@@ -539,8 +555,10 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
               <div style={{background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"6px 10px",fontSize:10,minWidth:180}}>
                 <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}>
                   <span style={{fontSize:12}}>💱</span>
-                  <span style={{color:ratesStatus==="ok"?"#15803d":"#dc2626",fontWeight:700,fontSize:10}}>USD → EUR</span>
-                  <span style={{color:"#9ca3af",fontSize:9,marginLeft:"auto"}}>{ratesDate||"—"}</span>
+                  <span style={{color:ratesStatus==="ok"?"#15803d":"#92400e",fontWeight:700,fontSize:10}}>USD → EUR</span>
+                  <span style={{color:"#9ca3af",fontSize:9,marginLeft:"auto"}}>
+                    {ratesStatus==="ok"?ratesDate:ratesStatus==="loading"?"…":"≈"}
+                  </span>
                   <button onClick={fetchRates} style={{background:"none",border:"none",color:"#4b5563",cursor:"pointer",fontSize:12,padding:0,marginLeft:2}} title="Actualiser">↻</button>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:5}}>
@@ -554,14 +572,12 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
                   />
                   <span style={{fontSize:11,color:"#6b7280",fontWeight:700}}>$ =</span>
                   <span style={{fontSize:13,fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d"}}>
-                    {rates.USD?((usdAmount/rates.USD).toFixed(2)):"—"} €
+                    {(usdAmount/rates.USD).toFixed(2)} €
                   </span>
                 </div>
-                {rates.USD&&(
-                  <div style={{color:"#6b7280",fontSize:9,marginTop:3,fontFamily:"'Space Mono',monospace"}}>
-                    1€={rates.USD.toFixed(4)}$ · 1$={(1/rates.USD).toFixed(4)}€
-                  </div>
-                )}
+                <div style={{color:"#6b7280",fontSize:9,marginTop:3,fontFamily:"'Space Mono',monospace"}}>
+                  1€={rates.USD.toFixed(4)}$ · 1$={(1/rates.USD).toFixed(4)}€
+                </div>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6,background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"5px 10px"}}>
                 <span style={{fontSize:10,color:"#4b5563",maxWidth:130,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{userEmail}</span>
