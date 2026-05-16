@@ -364,6 +364,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   const[rates,setRates]=useState({});
   const[ratesDate,setRatesDate]=useState(null);
   const[ratesStatus,setRatesStatus]=useState("loading");
+  const[usdAmount,setUsdAmount]=useState(100); // montant USD pour conversion rapide
   const[aiText,setAiText]=useState("");
   const[aiLoading,setAiLoading]=useState(false);
   // ─── STOCK ─────────────────────────────────────────────────────────────
@@ -535,13 +536,32 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
               <div style={{display:"flex",gap:3,background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"3px 4px"}}>
                 {["fr","en","es"].map(l=><button key={l} onClick={()=>setLang(l)} style={{padding:"4px 9px",borderRadius:6,border:`1px solid ${lang===l?"#4ade80":"transparent"}`,background:lang===l?"#4ade8020":"transparent",color:lang===l?"#4ade80":"#6b7280",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{l==="fr"?"🇫🇷 FR":l==="en"?"🇬🇧 EN":"🇪🇸 ES"}</button>)}
               </div>
-              <div style={{background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"5px 10px",fontSize:10}}>
-                <div style={{display:"flex",alignItems:"center",gap:5}}>
-                  <div style={{width:5,height:5,borderRadius:"50%",background:ratesStatus==="ok"?"#4ade80":"#f87171"}}/>
-                  <span style={{color:ratesStatus==="ok"?"#4ade80":"#f87171",fontWeight:700}}>{t.liveRates} {ratesStatus==="ok"?"✓":"—"}</span>
-                  <button onClick={fetchRates} style={{background:"none",border:"none",color:"#4b5563",cursor:"pointer",fontSize:12,padding:0}}>↻</button>
+              <div style={{background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"6px 10px",fontSize:10,minWidth:180}}>
+                <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}>
+                  <span style={{fontSize:12}}>💱</span>
+                  <span style={{color:ratesStatus==="ok"?"#15803d":"#dc2626",fontWeight:700,fontSize:10}}>USD → EUR</span>
+                  <span style={{color:"#9ca3af",fontSize:9,marginLeft:"auto"}}>{ratesDate||"—"}</span>
+                  <button onClick={fetchRates} style={{background:"none",border:"none",color:"#4b5563",cursor:"pointer",fontSize:12,padding:0,marginLeft:2}} title="Actualiser">↻</button>
                 </div>
-                {ratesDate&&<div style={{color:"#6b7280",fontSize:9}}>{t.updated}: {ratesDate}{rates.USD?` · 1€=${rates.USD.toFixed(3)}$`:""}</div>}
+                <div style={{display:"flex",alignItems:"center",gap:5}}>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={usdAmount}
+                    onChange={e=>setUsdAmount(Number(e.target.value)||0)}
+                    style={{width:60,padding:"3px 6px",borderRadius:5,border:"1px solid #dee2e6",fontSize:11,fontFamily:"'Space Mono',monospace",textAlign:"right",fontWeight:700,color:"#1e40af",background:"#eff6ff"}}
+                  />
+                  <span style={{fontSize:11,color:"#6b7280",fontWeight:700}}>$ =</span>
+                  <span style={{fontSize:13,fontFamily:"'Space Mono',monospace",fontWeight:700,color:"#15803d"}}>
+                    {rates.USD?((usdAmount/rates.USD).toFixed(2)):"—"} €
+                  </span>
+                </div>
+                {rates.USD&&(
+                  <div style={{color:"#6b7280",fontSize:9,marginTop:3,fontFamily:"'Space Mono',monospace"}}>
+                    1€={rates.USD.toFixed(4)}$ · 1$={(1/rates.USD).toFixed(4)}€
+                  </div>
+                )}
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6,background:"#f8f9fa",border:"1px solid #dee2e6",borderRadius:8,padding:"5px 10px"}}>
                 <span style={{fontSize:10,color:"#4b5563",maxWidth:130,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{userEmail}</span>
