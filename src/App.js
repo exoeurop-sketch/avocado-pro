@@ -14,9 +14,9 @@ const T = {
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
-    kpi:[{label:"Offre EU S20",val:"17.9M kg",sub:"795 cnts · +20% vs S19"},{label:"CIRAD Cal.18 S20",val:"10.42€",sub:"↘ -3,9% vs S19"},{label:"Pérou S20 Europe",val:"~825 cnts",sub:"Pic d'arrivée approche"},{label:"Prix S20 Cal.18",val:"9.0–10.0€",sub:"CIF /caisse 4kg ↘↘"}],
+    kpi:[{label:"Offre EU S22",val:"19.2M kg",sub:"883 cnts · PIC atteint ✓"},{label:"CIRAD Cal.18 S22",val:"9.65€",sub:"↘ -3,0% vs S21"},{label:"Pérou S22 Europe",val:"~883 cnts",sub:"Pic d'arrivée confirmé"},{label:"Prix S22 Cal.18",val:"9.5–10.0€",sub:"CIF /caisse 4kg ↘"}],
     supplyTitle:"Disponibilité palta Hass Europe 2026 (M kg/semaine)",
-    supplyNote:"Réel jusqu'à S20 · S21+ = projections",
+    supplyNote:"Réel jusqu'à S22 · S23+ = projections",
     ciradTitle:"Prix référence CIRAD · Hass Cal.18 · €/caisse 4kg",
     ciradAlert:"↘ Tendance baissière confirmée · Pression offre croissante",
     blocks:[
@@ -112,9 +112,9 @@ const T = {
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
     col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
-    kpi:[{label:"EU Supply W20",val:"17.9M kg",sub:"795 cnts · +20% vs W19"},{label:"CIRAD Cal.18 W20",val:"10.42€",sub:"↘ -3.9% vs W19"},{label:"Peru W20 Europe",val:"~825 cnts",sub:"Arrival peak approaching"},{label:"Price W20 Cal.18",val:"9.0–10.0€",sub:"CIF /4kg box ↘↘"}],
+    kpi:[{label:"EU Supply W22",val:"19.2M kg",sub:"883 cnts · PEAK reached ✓"},{label:"CIRAD Cal.18 W22",val:"9.65€",sub:"↘ -3.0% vs W21"},{label:"Peru W22 Europe",val:"~883 cnts",sub:"Arrival peak confirmed"},{label:"Price W22 Cal.18",val:"9.5–10.0€",sub:"CIF /4kg box ↘"}],
     supplyTitle:"Hass avocado availability Europe 2026 (M kg/week)",
-    supplyNote:"Actual up to W20 · W21+ = forecasts",
+    supplyNote:"Actual up to W22 · W23+ = forecasts",
     ciradTitle:"CIRAD reference price · Hass Cal.18 · €/4kg box",
     ciradAlert:"↘ Confirmed downward trend · Growing supply pressure",
     blocks:[
@@ -210,9 +210,9 @@ const T = {
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
     col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
-    kpi:[{label:"Oferta EU S20",val:"17.9M kg",sub:"795 cnts · +20% vs S19"},{label:"CIRAD Cal.18 S20",val:"10.42€",sub:"↘ -3,9% vs S19"},{label:"Perú S20 Europa",val:"~825 cnts",sub:"Pico llegada cercano"},{label:"Precio S20 Cal.18",val:"9.0–10.0€",sub:"CIF /caja 4kg ↘↘"}],
+    kpi:[{label:"Oferta EU S22",val:"19.2M kg",sub:"883 cnts · PICO alcanzado ✓"},{label:"CIRAD Cal.18 S22",val:"9.65€",sub:"↘ -3,0% vs S21"},{label:"Perú S22 Europa",val:"~883 cnts",sub:"Pico de llegada confirmado"},{label:"Precio S22 Cal.18",val:"9.5–10.0€",sub:"CIF /caja 4kg ↘"}],
     supplyTitle:"Disponibilidad palta Hass Europa 2026 (M kg/semana)",
-    supplyNote:"Real hasta S20 · S21+ = proyecciones",
+    supplyNote:"Real hasta S22 · S23+ = proyecciones",
     ciradTitle:"Precio referencia CIRAD · Hass Cal.18 · €/caja 4kg",
     ciradAlert:"↘ Tendencia bajista confirmada · Presión de oferta creciente",
     blocks:[
@@ -531,7 +531,7 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
   const getAI=async()=>{
     setAiLoading(true);setAiText("");
     const history=allWeeks.map(w=>{const p=REAL_PRICES[w]?.[origin]?.[cal];return p?`W${w}:${p[0]}–${p[1]}`:`W${w}:N/A`;}).join(" | ");
-    const prompt=`Hass avocado Europe expert. 4 sentences (${lang==="fr"?"French":lang==="es"?"Spanish":"English"}), concrete buying advice:\nOrigin:${t.origins[origin]}|Grade:${cal}|Week:${week}\nPrices:${history}\nCIRAD W20=10.42€↘ EU supply W20=17.9Mkg (825 cnts)\nContext:${ctx?.note}|${ctx?.season}\nGrades:large ${ctx?.big} medium ${ctx?.medium} small ${ctx?.small}`;
+    const prompt=`Hass avocado Europe expert. 4 sentences (${lang==="fr"?"French":lang==="es"?"Spanish":"English"}), concrete buying advice:\nOrigin:${t.origins[origin]}|Grade:${cal}|Week:${week}\nPrices:${history}\nCIRAD W22=9.65€↘ EU supply W22=19.2Mkg (883 cnts - PEAK reached)\nContext:${ctx?.note}|${ctx?.season}\nGrades:large ${ctx?.big} medium ${ctx?.medium} small ${ctx?.small}`;
     try{const r=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});const d=await r.json();setAiText(d.text||"N/A");}
     catch{setAiText("Connection error.");}
     setAiLoading(false);

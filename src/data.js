@@ -33,6 +33,14 @@ export const REAL_PRICES = {
     "South Africa": { 14:[9.75,10.25],16:[10.00,10.50],18:[10.00,10.50],20:[9.25,9.75],22:[7.25,7.75] },
     "Brazil":       { 14:[8.75,9.25],16:[8.75,9.25],18:[8.75,9.25],20:[8.50,9.00],22:[7.25,7.75] },
   },
+  // S22 — Données OFFICIELLES marché S22/2026 (rapport publié 22-mai-2026)
+  // Pic d'arrivée confirmé : 883 containers EU (vs 874 S21)
+  22: {
+    "Peru":         { 14:[9.75,10.25],16:[9.75,10.25],18:[9.50,10.00],20:[8.75,9.25],22:[7.25,7.75],24:[6.25,6.75],26:[1.20,1.40],28:[1.10,1.30],30:[1.00,1.20],32:[0.90,1.10] },
+    "Colombia":     { 14:[9.25,9.75],16:[9.25,9.75],18:[9.00,9.50],20:[8.25,8.75],22:[6.75,7.25],24:[5.50,6.00],26:[1.20,1.40],28:[1.10,1.20],30:[0.90,1.10],32:[0.80,1.00] },
+    "South Africa": { 14:[9.25,9.75],16:[9.50,10.00],18:[9.25,9.75],20:[8.25,8.75],22:[6.75,7.25] },
+    "Brazil":       { 14:[8.25,8.75],16:[8.25,8.75],18:[8.25,8.75],20:[8.00,8.50],22:[6.75,7.25] },
+  },
   // S21 — Estimation interne (la semaine commence lundi 18 mai 2026)
   // Logique : poursuite tendance baissière confirmée par ProHass S20 (Olmos + Chavimochic démarrent,
   // peak containers approche, calibres 26-32 stabilisent grâce à moindre arrivée small fruit)
@@ -43,46 +51,40 @@ export const REAL_PRICES = {
     "Brazil":       { 14:[8.25,8.75],16:[8.25,8.75],18:[8.25,8.75],20:[8.00,8.50],22:[6.75,7.25] },
   },
 };
-export const LATEST_WEEK = 21;
-// Indice CIRAD calibre 18 — Source : graphique ProHass S20 (S15-S19 corrigés)
-export const CIRAD_REF = { 11:11.97,12:11.86,13:12.14,14:12.22,15:12.30,16:12.45,17:11.87,18:11.21,19:10.58,20:10.20,21:9.95 };
-// Volumes réels EU (M kg/semaine) — Source : tableau "Disponibilidad de palta Hass a Europa" ProHass S20
-// S20 = 23.7 K TM (vs ~24.2 K l'année passée), S21 estimé en hausse (peak approche)
-export const WEEKLY_SUPPLY_EU = { 14:9.5,15:9.3,16:13.1,17:14.1,18:14.4,19:14.3,20:23.7,21:24.5,22:24.0 };
-export const REAL_WEEKS = [14,15,16,17,18,19,20,21];
+export const LATEST_WEEK = 22;
+// Indice CIRAD calibre 18 — Source : graphique ProHass S22 (mise à jour 22-mai-2026)
+export const CIRAD_REF = { 11:11.97,12:11.86,13:12.14,14:12.22,15:12.30,16:12.45,17:11.87,18:11.21,19:10.58,20:10.20,21:9.95,22:9.65 };
+// Volumes réels EU (M kg/semaine) — calculés depuis containers ETA réels × 21.7 t
+// S22 = 883 containers (pic d'arrivée), S20 corrigé : 828 cnt (18.0 M kg)
+export const WEEKLY_SUPPLY_EU = { 14:9.5,15:9.2,16:13.0,17:14.1,18:14.4,19:14.2,20:18.0,21:19.0,22:19.2 };
+export const REAL_WEEKS = [14,15,16,17,18,19,20,21,22];
 // TOP 10 importateurs Europe — Données réelles cumulées S1-S22 (containers)
 // Volumes hebdo S19-S22 disponibles pour suivi en temps réel
 export const TOP_IMPORTERS = [
-  { name:"Nature's Pride BV",          country:"NL", w19:64, w20:84, w21:81, w22:56, cumul:434 },
-  { name:"Trops Import-Export SL",     country:"ES", w19:47, w20:41, w21:59, w22:44, cumul:279 },
-  { name:"OGL Food Trade GmbH",        country:"DE", w19:22, w20:38, w21:40, w22:43, cumul:227 },
-  { name:"Hillfresh Int. BV",          country:"NL", w19:21, w20:21, w21:13, w22:6,  cumul:200 },
-  { name:"Frutas Montosa SL",          country:"ES", w19:16, w20:14, w21:20, w22:22, cumul:194 },
-  { name:"Westfalia Fruit UK Ltd",     country:"UK", w19:14, w20:33, w21:36, w22:11, cumul:172 },
-  { name:"Axarfruit SL",               country:"ES", w19:10, w20:9,  w21:7,  w22:6,  cumul:161 },
-  { name:"Mehadrin Tnuport Export",    country:"IL", w19:18, w20:14, w21:18, w22:12, cumul:159 },
-  { name:"Mission Produce UK",         country:"UK", w19:12, w20:13, w21:14, w22:17, cumul:145 },
-  { name:"CMR Group",                  country:"BE", w19:8,  w20:13, w21:18, w22:15, cumul:145 },
+  { name:"Nature's Pride BV",          country:"NL", w19:34, w20:84, w21:81, w22:62, cumul:512 },
+  { name:"Trops Import-Export SL",     country:"ES", w19:44, w20:44, w21:59, w22:44, cumul:330 },
+  { name:"OGL Food Trade GmbH",        country:"DE", w19:26, w20:38, w21:40, w22:50, cumul:264 },
+  { name:"Frutas Montosa SL",          country:"ES", w19:15, w20:14, w21:20, w22:22, cumul:213 },
+  { name:"Westfalia Fruit UK Ltd",     country:"UK", w19:14, w20:33, w21:36, w22:29, cumul:211 },
+  { name:"Hillfresh Int. BV",          country:"NL", w19:16, w20:21, w21:13, w22:6,  cumul:201 },
+  { name:"Mehadrin Tnuport Export",    country:"IL", w19:13, w20:14, w21:18, w22:12, cumul:173 },
+  { name:"Mission Produce UK",         country:"UK", w19:12, w20:13, w21:14, w22:18, cumul:167 },
+  { name:"Axarfruit SL",               country:"ES", w19:10, w20:9,  w21:7,  w22:6,  cumul:166 },
+  { name:"HL Hall International Ltd",  country:"UK", w19:14, w20:11, w21:13, w22:17, cumul:163 },
 ];
 export const CALIBRES_LIST = [14,16,18,20,22,24,26,28,30,32];
 export const CALIBRE_WEIGHTS = { 14:"285-333g",16:"250-285g",18:"222-250g",20:"200-222g",22:"182-200g",24:"167-182g",26:"154-167g",28:"143-154g",30:"133-143g",32:"125-133g" };
 export const ORIGIN_COLOR = { "Peru":"#f59e0b","Colombia":"#4ade80","South Africa":"#34d399","Brazil":"#60a5fa","Spain":"#f87171" };
 export const ORIGIN_FLAG  = { "Peru":"🇵🇪","Colombia":"🇨🇴","South Africa":"🇿🇦","Brazil":"🇧🇷","Spain":"🇪🇸" };
 
-// ─── PRÉVISIONS S22-S25 ──────────────────────────────────────────────────────
-// Basées sur : ProHass S20 + tendance CIRAD S15→S19 (-14%), peak Pérou S22-S23,
-// Olmos en pleine production, sortie progressive Brésil/Maluma SA, stabilisation small.
-export const FORECAST_WEEKS = [22, 23, 24, 25];
+// ─── PRÉVISIONS S23-S26 ──────────────────────────────────────────────────────
+// S22 maintenant en données réelles. Prévisions ajustées : pic atteint S22 (883 cnt),
+// puis décroissance S23 attendue, stabilisation small calibres.
+export const FORECAST_WEEKS = [23, 24, 25, 26];
 
 // Prévisions de prix par origine et calibre [min, max]
-// Logique : peak arrivées EU S22-S23 (départs Pérou S19-S20 = 820+ cont), puis stabilisation S24-S25
+// Logique : pic dépassé S22, décroissance volumes S23+, Brésil/Maluma SA en sortie progressive
 export const FORECAST_PRICES = {
-  22: {
-    "Peru":         { 14:[9.75,10.25],16:[9.75,10.25],18:[9.75,10.25],20:[8.75,9.25],22:[7.00,7.50],24:[6.00,6.50],26:[1.20,1.40],28:[1.10,1.30],30:[1.00,1.20],32:[0.90,1.10] },
-    "Colombia":     { 16:[9.00,9.50],18:[9.00,9.50],20:[8.25,8.75],22:[6.25,6.75],24:[5.00,5.50],26:[1.20,1.40],28:[1.10,1.25],30:[0.95,1.15],32:[0.85,1.05] },
-    "South Africa": { 16:[8.75,9.25],18:[8.75,9.25],20:[8.25,8.75],22:[6.25,6.75] },
-    "Brazil":       { 16:[7.75,8.25],18:[7.75,8.25],20:[7.50,8.00],22:[6.25,6.75] },
-  },
   23: {
     "Peru":         { 14:[9.25,9.75],16:[9.25,9.75],18:[9.25,9.75],20:[8.25,8.75],22:[6.50,7.00],24:[5.50,6.00],26:[1.15,1.35],28:[1.05,1.25],30:[0.95,1.15],32:[0.85,1.05] },
     "Colombia":     { 16:[8.50,9.00],18:[8.50,9.00],20:[7.75,8.25],22:[5.75,6.25],24:[4.50,5.00],26:[1.15,1.35],28:[1.05,1.20],30:[0.90,1.10],32:[0.80,1.00] },
@@ -99,27 +101,32 @@ export const FORECAST_PRICES = {
     "Colombia":     { 16:[8.00,8.50],18:[8.00,8.50],20:[7.25,7.75],22:[5.25,5.75],24:[4.00,4.50],26:[1.10,1.30],28:[1.00,1.15],30:[0.85,1.05],32:[0.75,0.95] },
     "South Africa": { 16:[7.75,8.25],18:[7.75,8.25],20:[7.25,7.75],22:[5.25,5.75] },
   },
+  26: {
+    "Peru":         { 14:[9.25,9.75],16:[9.25,9.75],18:[9.25,9.75],20:[8.00,8.50],22:[6.25,6.75],24:[5.25,5.75],26:[1.10,1.30],28:[1.00,1.20],30:[0.90,1.10],32:[0.80,1.00] },
+    "Colombia":     { 16:[8.25,8.75],18:[8.25,8.75],20:[7.50,8.00],22:[5.50,6.00],24:[4.25,4.75],26:[1.10,1.30],28:[1.00,1.15],30:[0.85,1.05],32:[0.75,0.95] },
+    "South Africa": { 16:[8.00,8.50],18:[8.00,8.50],20:[7.50,8.00],22:[5.50,6.00] },
+  },
 };
 
 // Volumes ARRIVÉE EU prévus (M kg/semaine) — basés sur arrivées réelles (départs Pérou S-3)
-// Peak réel arrivées EU = S22-S23 (départs Pérou S19-S20 confirmés à 820+ containers)
-export const FORECAST_SUPPLY = { 22:25.0, 23:24.8, 24:23.5, 25:22.0 };
+// S22 réel : 883 cont = 19.2 M kg (PIC ATTEINT). S23 = 705 cont en cours → décroissance attendue.
+export const FORECAST_SUPPLY = { 23:15.3, 24:14.0, 25:13.5, 26:13.0 };
 
 // Tendance globale par semaine et catégorie de calibres
 // Légende : ↘↘ très baissier · ↘ baissier · = stable · ↗ haussier · ↗↗ très haussier
 export const FORECAST_TREND = {
-  22: { big:"↘↘", medium:"↘", small:"=", note:"Arrivées EU 25.0K TM (départs S19 = 820+ cont). PEAK approche, pression maximale sur gros calibres." },
-  23: { big:"↘↘", medium:"↘", small:"=", note:"Arrivées EU 24.8K TM. Pic confirmé — Olmos pleine production. Small stabilisé." },
-  24: { big:"↘", medium:"↘", small:"=", note:"Arrivées EU 23.5K TM. Post-peak, début décrue. Brésil/Maluma SA quasi finis." },
-  25: { big:"=", medium:"=", small:"=", note:"Arrivées EU 22.0K TM. Stabilisation plateau — calibres trouvent leur équilibre." },
+  23: { big:"=", medium:"=", small:"=", note:"Arrivées EU 15.3K TM (705 cont en cours). POST-PIC, début décroissance volumes." },
+  24: { big:"↗", medium:"=", small:"=", note:"Arrivées EU 14.0K TM. Décrue confirmée — Olmos production en baisse progressive." },
+  25: { big:"↗", medium:"↗", small:"=", note:"Arrivées EU 13.5K TM. Stabilisation calibres gros — début rebond prix possible." },
+  26: { big:"↗", medium:"↗", small:"=", note:"Arrivées EU 13.0K TM. Tendance haussière confirmée sur calibres premium." },
 };
 
 // Carte stratégique acheteur — recommandation par semaine
 export const FORECAST_STRATEGY = {
-  22: { color:"#16a34a", label:"🟢 ACHETER", reason:"PIC d'arrivées EU (départs Pérou S19 confirmés 820+ cont). Prix gros calibres au plancher." },
-  23: { color:"#16a34a", label:"🟢 ACHETER MAX", reason:"Sur-offre confirmée. Olmos + Chavimochic en pleine production. Opportunité maximale calibres premium." },
-  24: { color:"#f59e0b", label:"🟡 SÉLECTIF", reason:"Décrue post-peak entamée. Privilégier programmes longs S25-S27 avant remontée éventuelle." },
-  25: { color:"#f59e0b", label:"🟡 SURVEILLER", reason:"Stabilisation attendue. Watch concurrence fruits été (cerises, melons) qui réduit espace promo retail." },
+  23: { color:"#f59e0b", label:"🟡 OPPORTUNISTE", reason:"Pic dépassé. Profiter des derniers prix plancher avant rebond. Sécuriser programmes S25-S27." },
+  24: { color:"#f59e0b", label:"🟡 PROGRAMMER", reason:"Volumes en décrue. Privilégier contrats longue durée. Surveiller remontée prix." },
+  25: { color:"#1e40af", label:"🔵 ANTICIPER", reason:"Rebond probable calibres gros. Acheter à l'avance avant hausse confirmée." },
+  26: { color:"#1e40af", label:"🔵 STOCK STRATÉGIQUE", reason:"Tendance haussière. Constituer stocks calibres premium pour mois suivants." },
 };
 
 // Facteurs climat & contexte (impactent les prévisions)
@@ -340,8 +347,9 @@ export const TOP_SHIPPING_COMPANIES = [
   { name:"OOCL",        containers:127,  pct:2,  transit:"21j (Rotterdam)" },
 ];
 
-// Containers par semaine S21 — Source ProHass S20 : S19 réel = 820 cont EU
+// Containers ARRIVÉES Europe par semaine — Source : fichier S22/2026 (22-mai-2026)
+// Données réelles ETA jusqu'à S22 (pic atteint), S23 en cours, S24-S25 projeté
 // Container 40' = ~21.7 tonnes nettes (palettes 11.2 kg × ~1940 cartons)
 export const PERU_EU_CONTAINERS_BY_WEEK = {
-  14:438, 15:430, 16:603, 17:650, 18:666, 19:820, 20:870, 21:920, 22:951, 23:940,
+  14:436, 15:425, 16:601, 17:649, 18:662, 19:654, 20:828, 21:874, 22:883, 23:705, 24:580, 25:480,
 };
