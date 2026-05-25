@@ -2,7 +2,7 @@ import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import LegalFooter from "./Legal";
 import VersionChecker from "./VersionChecker";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -618,13 +618,12 @@ function Dashboard({userEmail,isAdmin,lang,setLang}){
               <span style={{fontSize:12,fontWeight:700,color:cfg.color}}>{cfg.flag} {t.origins[origin]} · {t.week} {week} · {t.realCif}</span>
               <span style={{fontSize:10,color:"#6b7280"}}>{t.cifNote}</span>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"60px 90px 110px 110px 90px",padding:"7px 14px",background:"#ffffff",borderBottom:"1px solid #dee2e6"}}>
-              {[t.col.cal,t.col.weight,t.col.min,t.col.max,t.col.trend].map(h=><div key={h} style={{fontSize:10,color:"#374151",textTransform:"uppercase",letterSpacing:"0.06em"}}>{h}</div>)}
+            <div style={{display:"grid",gridTemplateColumns:"80px 140px 140px 110px",padding:"7px 14px",background:"#ffffff",borderBottom:"1px solid #dee2e6"}}>
+              {[t.col.cal,t.col.min,t.col.max,t.col.trend].map(h=><div key={h} style={{fontSize:10,color:"#374151",textTransform:"uppercase",letterSpacing:"0.06em"}}>{h}</div>)}
             </div>
             {CALIBRES_LIST.map((c,i)=>{const p=REAL_PRICES[week]?.[origin]?.[c];const tr=getTrend(origin,c);const isSel=cal===c;const isKg=c>=26;return(
-              <div key={c} onClick={()=>setCal(c)} style={{display:"grid",gridTemplateColumns:"60px 90px 110px 110px 90px",padding:"10px 14px",cursor:"pointer",background:isSel?`${cfg.color}12`:i%2===0?"#f8f9fa":"#f1f3f5",borderLeft:isSel?`3px solid ${cfg.color}`:"3px solid transparent",borderBottom:i<CALIBRES_LIST.length-1?"1px solid #dee2e6":"none"}}>
+              <div key={c} onClick={()=>setCal(c)} style={{display:"grid",gridTemplateColumns:"80px 140px 140px 110px",padding:"10px 14px",cursor:"pointer",background:isSel?`${cfg.color}12`:i%2===0?"#f8f9fa":"#f1f3f5",borderLeft:isSel?`3px solid ${cfg.color}`:"3px solid transparent",borderBottom:i<CALIBRES_LIST.length-1?"1px solid #dee2e6":"none"}}>
                 <div style={{fontFamily:"'Space Mono',monospace",fontWeight:700,color:cfg.color,fontSize:14,display:"flex",alignItems:"center",gap:4}}>{c}{isSel&&<span style={{fontSize:7,background:cfg.color,color:"#000",borderRadius:3,padding:"1px 3px"}}>●</span>}</div>
-                <div style={{fontSize:11,color:"#4b5563",display:"flex",alignItems:"center"}}>{CALIBRE_WEIGHTS[c]}</div>
                 <div style={{fontFamily:"'Space Mono',monospace",fontSize:13,color:"#16a34a",fontWeight:700,display:"flex",alignItems:"center"}}>{p?`${p[0]}${isKg?" €/kg":"€"}`:<span style={{color:"#9ca3af"}}>{t.nd}</span>}</div>
                 <div style={{fontFamily:"'Space Mono',monospace",fontSize:13,color:"#059669",fontWeight:700,display:"flex",alignItems:"center"}}>{p?`${p[1]}${isKg?" €/kg":"€"}`:""}</div>
                 <div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:16,color:trendColor(tr),fontWeight:700}}>{tr}</span><span style={{fontSize:9,color:"#9ca3af"}}>S{allWeeks[0]}→S{allWeeks[allWeeks.length-1]}</span></div>
