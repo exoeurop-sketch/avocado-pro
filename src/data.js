@@ -73,7 +73,6 @@ export const TOP_IMPORTERS = [
   { name:"HL Hall International Ltd",  country:"UK", w19:14, w20:11, w21:13, w22:17, cumul:163 },
 ];
 export const CALIBRES_LIST = [14,16,18,20,22,24,26,28,30,32];
-export const CALIBRE_WEIGHTS = { 14:"285-333g",16:"250-285g",18:"222-250g",20:"200-222g",22:"182-200g",24:"167-182g",26:"154-167g",28:"143-154g",30:"133-143g",32:"125-133g" };
 export const ORIGIN_COLOR = { "Peru":"#f59e0b","Colombia":"#4ade80","South Africa":"#34d399","Brazil":"#60a5fa","Spain":"#f87171" };
 export const ORIGIN_FLAG  = { "Peru":"🇵🇪","Colombia":"🇨🇴","South Africa":"🇿🇦","Brazil":"🇧🇷","Spain":"🇪🇸" };
 

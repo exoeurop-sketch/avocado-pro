@@ -2,7 +2,7 @@ import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 import { useState, useEffect, useCallback } from "react";
 import LegalFooter from "./Legal";
 import VersionChecker from "./VersionChecker";
-import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, CALIBRE_WEIGHTS, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
+import { REAL_PRICES, LATEST_WEEK, CIRAD_REF, WEEKLY_SUPPLY_EU, REAL_WEEKS, TOP_IMPORTERS, CALIBRES_LIST, ORIGIN_COLOR, ORIGIN_FLAG, FORECAST_WEEKS, FORECAST_PRICES, FORECAST_SUPPLY, FORECAST_TREND, FORECAST_STRATEGY, FORECAST_FACTORS, PERU_WEEKLY_EUROPE, PERU_WEEKLY_USA, PERU_WEEKLY_ASIA, PERU_ANNUAL_TOTAL, PERU_ANNUAL_EUROPE, PERU_ANNUAL_USA, PERU_ANNUAL_ASIA, PERU_EUROPE_BY_COUNTRY, PERU_ASIA_BY_COUNTRY, PERU_HECTARES_HISTORY, PERU_REGIONS, PERU_2026_INSIGHTS, PERU_ARRIVALS_EUROPE, TRANSIT_WEEKS, TOP_EU_PORTS, TOP_PERU_EXPORTERS, TOP_SHIPPING_COMPANIES } from "./data";
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 const ADMIN_EMAIL = process.env.REACT_APP_ADMIN_EMAIL || "exoeurop@gmail.com";
@@ -13,7 +13,7 @@ const T = {
     tabs:["💰 Prix calibres","📦 Volumes","🏢 Importateurs","📈 Prévisions","🇵🇪 Saison Pérou","🔮 Analyse IA","📋 Mon Stock","🧮 Calculateur"],
     origin:"Origine", week:"Semaine", size:"Calibre",
     realCif:"Prix CIF Europe réels", cifNote:"Cal. 14–24 = €/caisse 4kg · Cal. 26–32 = €/kg",
-    col:{cal:"Cal.",weight:"Poids",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
+    col:{cal:"Cal.",min:"Min",max:"Max",trend:"Tendance",growth:"Croissance",importer:"Importateur"},
     kpi:[{label:"Offre EU S22",val:"19.2M kg",sub:"883 cnts · PIC atteint ✓"},{label:"CIRAD Cal.18 S22",val:"9.65€",sub:"↘ -3,0% vs S21"},{label:"Pérou S22 Europe",val:"~883 cnts",sub:"Pic d'arrivée confirmé"},{label:"Prix S22 Cal.18",val:"9.5–10.0€",sub:"CIF /caisse 4kg ↘"}],
     supplyTitle:"Disponibilité palta Hass Europe 2026 (M kg/semaine)",
     supplyNote:"Réel jusqu'à S22 · S23+ = projections",
@@ -111,7 +111,7 @@ const T = {
     tabs:["💰 Calibre prices","📦 Volumes","🏢 Importers","📈 Forecast","🇵🇪 Peru Season","🔮 AI Analysis","📋 My Stock","🧮 Calculator"],
     origin:"Origin", week:"Week", size:"Grade",
     realCif:"Real CIF Europe prices", cifNote:"Cal. 14–24 = €/4kg box · Cal. 26–32 = €/kg",
-    col:{cal:"Grade",weight:"Weight",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
+    col:{cal:"Grade",min:"Min",max:"Max",trend:"Trend",growth:"Growth",importer:"Importer"},
     kpi:[{label:"EU Supply W22",val:"19.2M kg",sub:"883 cnts · PEAK reached ✓"},{label:"CIRAD Cal.18 W22",val:"9.65€",sub:"↘ -3.0% vs W21"},{label:"Peru W22 Europe",val:"~883 cnts",sub:"Arrival peak confirmed"},{label:"Price W22 Cal.18",val:"9.5–10.0€",sub:"CIF /4kg box ↘"}],
     supplyTitle:"Hass avocado availability Europe 2026 (M kg/week)",
     supplyNote:"Actual up to W22 · W23+ = forecasts",
@@ -209,7 +209,7 @@ const T = {
     tabs:["💰 Precios calibres","📦 Volúmenes","🏢 Importadores","📈 Previsiones","🇵🇪 Temporada Perú","🔮 Análisis IA","📋 Mi Stock","🧮 Calculadora"],
     origin:"Origen", week:"Semana", size:"Calibre",
     realCif:"Precios CIF Europa reales", cifNote:"Cal. 14–24 = €/caja 4kg · Cal. 26–32 = €/kg",
-    col:{cal:"Cal.",weight:"Peso",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
+    col:{cal:"Cal.",min:"Mín",max:"Máx",trend:"Tendencia",growth:"Crecimiento",importer:"Importador"},
     kpi:[{label:"Oferta EU S22",val:"19.2M kg",sub:"883 cnts · PICO alcanzado ✓"},{label:"CIRAD Cal.18 S22",val:"9.65€",sub:"↘ -3,0% vs S21"},{label:"Perú S22 Europa",val:"~883 cnts",sub:"Pico de llegada confirmado"},{label:"Precio S22 Cal.18",val:"9.5–10.0€",sub:"CIF /caja 4kg ↘"}],
     supplyTitle:"Disponibilidad palta Hass Europa 2026 (M kg/semana)",
     supplyNote:"Real hasta S22 · S23+ = proyecciones",
